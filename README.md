@@ -5,14 +5,61 @@ A self-improving agentic system for Claude Code that implements the **Agent Expe
 ## Installation
 
 ```bash
-# From GitHub
-claude plugin install github:brolag/neural-claude-code-plugin --scope user
+# Step 1: Add the marketplace
+claude plugin marketplace add brolag/neural-claude-code-plugin
 
-# From local path
-claude plugin install ~/Sites/neural-claude-code-plugin --scope user
+# Step 2: Install the plugin
+claude plugin install neural-claude-code@brolag --scope user
+```
+
+Or via slash commands in Claude Code:
+```
+/plugin marketplace add brolag/neural-claude-code-plugin
+/plugin install neural-claude-code@brolag --scope user
 ```
 
 ## Features
+
+### Output Styles (v1.2.0)
+
+Switch response formats mid-session with `/output-style <name>`:
+
+| Style | Description |
+|-------|-------------|
+| `default` | Standard conversational responses |
+| `table` | Organized markdown tables |
+| `yaml` | Highly structured YAML (best for complex tasks) |
+| `concise` | Minimal tokens, maximum signal |
+| `tts` | Audio summary via ElevenLabs at response end |
+| `html` | Generate HTML documents, open in browser |
+| `genui` | Full generative UI with rich styling |
+
+### Status Lines (v1.2.0)
+
+Dynamic status bar with session state tracking:
+
+| Version | Shows |
+|---------|-------|
+| `v1` | Model, directory, git branch |
+| `v2` | + Last prompt with emoji indicator |
+| `v3` | + Agent name + trailing prompts |
+
+Format: `🟣 opus │ 💡 create readme │ Nova │ main +2`
+
+Emoji indicators: ❓ Questions, 💡 Create, 🔧 Fix, 🗑️ Delete, ✅ Test
+
+### ElevenLabs TTS (v1.2.0)
+
+Text-to-speech on task completion:
+- Use `/output-style tts` to enable
+- Summaries extracted via `---TTS_SUMMARY---` markers
+- Automatic audio playback (macOS)
+
+Requires `ELEVENLABS_API_KEY` environment variable.
+
+### Agent Names (v1.2.0)
+
+Creative agent names generated via Ollama (llama3.2:1b) to identify multiple Claude Code instances running in parallel.
 
 ### Meta-Agentics (The System That Builds The System)
 
@@ -170,7 +217,8 @@ This creates:
 
 ```bash
 # Install the plugin
-claude plugin install github:brolag/neural-claude-code-plugin --scope user
+claude plugin marketplace add brolag/neural-claude-code-plugin
+claude plugin install neural-claude-code@brolag --scope user
 
 # In any project, initialize
 > setup claude
@@ -196,14 +244,37 @@ claude plugin install github:brolag/neural-claude-code-plugin --scope user
 ```
 neural-claude-code-plugin/
 ├── .claude-plugin/
-│   └── plugin.json          # Plugin manifest
+│   ├── plugin.json          # Plugin manifest
+│   └── marketplace.json     # Marketplace config
 ├── commands/
 │   ├── meta/
 │   │   ├── prompt.md        # Create prompts (--dry-run)
 │   │   ├── improve.md       # Sync expertise (--prune)
 │   │   ├── eval.md          # Run tests
 │   │   └── brain.md         # System status
-│   └── question.md          # Universal Q&A
+│   ├── question.md          # Universal Q&A
+│   └── output-style.md      # Switch output styles
+├── output-styles/           # Response format templates
+│   ├── default.md
+│   ├── table.md
+│   ├── yaml.md
+│   ├── concise.md
+│   ├── tts.md
+│   ├── html.md
+│   └── genui.md
+├── status-lines/            # Status bar scripts
+│   ├── v1.sh
+│   ├── v2.sh
+│   └── v3.sh
+├── scripts/
+│   ├── hooks/
+│   │   ├── session-start.sh
+│   │   ├── user-prompt.sh
+│   │   └── stop-tts.sh
+│   ├── tts/
+│   │   └── elevenlabs.sh
+│   └── utils/
+│       └── agent-name.sh
 ├── agents/
 │   ├── meta-agent.md        # Creates agents
 │   ├── cognitive-amplifier.md
@@ -225,11 +296,20 @@ neural-claude-code-plugin/
 ├── templates/
 │   └── expertise.template.yaml
 ├── hooks/
-│   └── post-commit-improve.md
+│   └── hooks.json           # Hook registrations
 ├── LICENSE
 ├── CHANGELOG.md
 └── README.md
 ```
+
+## New in v1.2.0
+
+- **Output Styles**: 7 response formats (default, table, yaml, concise, tts, html, genui)
+- **Status Lines**: 3 versions with model, prompt, agent name, git info
+- **ElevenLabs TTS**: Audio summaries on task completion
+- **Agent Names**: Ollama-generated names for multi-instance identification
+- **Session State**: JSON tracking in `.claude/data/current-session.json`
+- **Hooks System**: SessionStart, UserPromptSubmit, Stop hooks
 
 ## New in v1.1.0
 
@@ -246,8 +326,11 @@ neural-claude-code-plugin/
 ## Requirements
 
 - Claude Code CLI
+- `jq` (JSON processing)
 - Optional: Codex CLI (`codex`) for multi-AI
 - Optional: Gemini CLI (`gemini`) for multi-AI
+- Optional: Ollama with `llama3.2:1b` for agent names
+- Optional: `ELEVENLABS_API_KEY` for TTS
 
 ## License
 
