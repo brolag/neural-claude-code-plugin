@@ -1,19 +1,22 @@
 #!/bin/bash
-# ElevenLabs Text-to-Speech
-# Converts text to speech and plays it
+# Text-to-Speech Script
+# Uses ElevenLabs API if available, falls back to macOS 'say' command
 
-set -e
+# Source user's shell config to get API keys
+[ -f "$HOME/.zshrc" ] && source "$HOME/.zshrc" 2>/dev/null || true
+[ -f "$HOME/.bashrc" ] && source "$HOME/.bashrc" 2>/dev/null || true
 
 # Configuration
 VOICE_ID="${ELEVENLABS_VOICE_ID:-21m00Tcm4TlvDq8ikWAM}"  # Rachel voice
 MODEL_ID="${ELEVENLABS_MODEL_ID:-eleven_monolingual_v1}"
 API_KEY="${ELEVENLABS_API_KEY:-}"
+TTS_LOG="${CLAUDE_TTS_LOG:-/tmp/claude-tts.log}"
+USE_FALLBACK="${CLAUDE_TTS_FALLBACK:-true}"  # Use macOS say as fallback
 
-# Check for API key
-if [ -z "$API_KEY" ]; then
-  echo "Warning: ELEVENLABS_API_KEY not set, skipping TTS" >&2
-  exit 0
-fi
+# Logging function
+log() {
+  echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$TTS_LOG"
+}
 
 # Get text from stdin or argument
 TEXT="${1:-}"
@@ -23,48 +26,68 @@ fi
 
 # Skip if empty
 if [ -z "$TEXT" ]; then
+  log "No text provided, skipping TTS"
   exit 0
 fi
+
+log "TTS requested: ${TEXT:0:50}..."
 
 # Truncate to 500 chars for API limits
 TEXT=$(echo "$TEXT" | head -c 500)
 
-# Create temp file for audio
-AUDIO_FILE=$(mktemp /tmp/claude-tts-XXXXXX.mp3)
+# Try ElevenLabs first
+if [ -n "$API_KEY" ]; then
+  log "Using ElevenLabs API"
 
-# Call ElevenLabs API
-HTTP_STATUS=$(curl -s -w "%{http_code}" -o "$AUDIO_FILE" \
-  -X POST "https://api.elevenlabs.io/v1/text-to-speech/$VOICE_ID" \
-  -H "Accept: audio/mpeg" \
-  -H "Content-Type: application/json" \
-  -H "xi-api-key: $API_KEY" \
-  -d "{
-    \"text\": $(echo "$TEXT" | jq -Rs .),
-    \"model_id\": \"$MODEL_ID\",
-    \"voice_settings\": {
-      \"stability\": 0.5,
-      \"similarity_boost\": 0.75
-    }
-  }" 2>/dev/null)
+  # Create temp file for audio
+  AUDIO_FILE=$(mktemp /tmp/claude-tts-XXXXXX.mp3)
 
-# Check response
-if [ "$HTTP_STATUS" != "200" ]; then
-  echo "ElevenLabs API error: HTTP $HTTP_STATUS" >&2
-  rm -f "$AUDIO_FILE"
-  exit 1
+  # Call ElevenLabs API
+  HTTP_STATUS=$(curl -s -w "%{http_code}" -o "$AUDIO_FILE" \
+    -X POST "https://api.elevenlabs.io/v1/text-to-speech/$VOICE_ID" \
+    -H "Accept: audio/mpeg" \
+    -H "Content-Type: application/json" \
+    -H "xi-api-key: $API_KEY" \
+    -d "{
+      \"text\": $(echo "$TEXT" | jq -Rs .),
+      \"model_id\": \"$MODEL_ID\",
+      \"voice_settings\": {
+        \"stability\": 0.5,
+        \"similarity_boost\": 0.75
+      }
+    }" 2>/dev/null)
+
+  # Check response
+  if [ "$HTTP_STATUS" = "200" ]; then
+    log "ElevenLabs success, playing audio"
+
+    # Play audio (macOS)
+    if command -v afplay &>/dev/null; then
+      afplay "$AUDIO_FILE" &
+    # Linux fallback
+    elif command -v mpv &>/dev/null; then
+      mpv --no-video "$AUDIO_FILE" &>/dev/null &
+    elif command -v play &>/dev/null; then
+      play "$AUDIO_FILE" &>/dev/null &
+    fi
+
+    # Clean up after playback
+    (sleep 30 && rm -f "$AUDIO_FILE") &>/dev/null &
+    exit 0
+  else
+    log "ElevenLabs API error: HTTP $HTTP_STATUS"
+    rm -f "$AUDIO_FILE"
+    # Fall through to fallback
+  fi
 fi
 
-# Play audio (macOS)
-if command -v afplay &>/dev/null; then
-  afplay "$AUDIO_FILE" &
-# Linux fallback
-elif command -v mpv &>/dev/null; then
-  mpv --no-video "$AUDIO_FILE" &>/dev/null &
-elif command -v play &>/dev/null; then
-  play "$AUDIO_FILE" &>/dev/null &
+# Fallback to macOS 'say' command
+if [ "$USE_FALLBACK" = "true" ] && command -v say &>/dev/null; then
+  log "Using macOS 'say' fallback"
+  # Use Samantha voice (good quality on macOS)
+  say -v Samantha "$TEXT" &
+  exit 0
 fi
 
-# Clean up after playback
-(sleep 30 && rm -f "$AUDIO_FILE") &>/dev/null &
-
+log "No TTS method available (set ELEVENLABS_API_KEY or enable fallback)"
 exit 0

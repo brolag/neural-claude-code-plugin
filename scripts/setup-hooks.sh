@@ -43,16 +43,29 @@ cp "$SETTINGS_FILE" "$SETTINGS_FILE.backup"
 echo "💾 Backed up settings to $SETTINGS_FILE.backup"
 
 # Define hooks to add (Claude Code 2.0 format)
+# IMPORTANT: matcher must be a string ("") not an object ({}) for lifecycle events
 HOOKS_JSON=$(cat <<EOF
 {
   "Stop": [
     {
-      "matcher": {},
+      "matcher": "",
       "hooks": [
         {
           "type": "command",
           "command": "bash $PLUGIN_ROOT/scripts/hooks/stop-tts.sh",
           "timeout": 15000
+        }
+      ]
+    }
+  ],
+  "SessionStart": [
+    {
+      "matcher": "",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "bash $PLUGIN_ROOT/scripts/hooks/session-start.sh",
+          "timeout": 5000
         }
       ]
     }
@@ -72,6 +85,7 @@ echo ""
 echo "✅ Hooks installed successfully!"
 echo ""
 echo "Hooks added:"
+echo "  • SessionStart → Loads context and initializes session"
 echo "  • Stop → TTS summary (plays audio after responses)"
 echo ""
 echo "⚠️  Restart Claude Code for changes to take effect"
