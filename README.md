@@ -18,6 +18,8 @@ Or via slash commands in Claude Code:
 /plugin install neural-claude-code@brolag --scope user
 ```
 
+> **First time?** See the [Complete Setup Guide](docs/SETUP.md) for detailed instructions including prerequisites.
+
 ## Features
 
 ### Output Styles (v1.2.0)
@@ -202,16 +204,24 @@ All expertise files are validated against `schemas/expertise.schema.json`:
 
 ## Project Setup
 
-After installing, run in any project:
+After installing the plugin, initialize it in your project:
 
+```bash
+cd /path/to/your/project
+claude
 ```
-"setup claude" or "init project"
+
+Then in Claude Code:
+```
+> setup claude
 ```
 
 This creates:
-- `.claude/` directory structure
-- Project-specific agents
-- Expertise files for your codebase
+- `.claude/data/` - Session state (gitignored)
+- `.claude/expertise/` - Agent learning files
+- `.claude/memory/` - Project-specific memory
+
+For detailed setup including ElevenLabs TTS and Ollama, see [Complete Setup Guide](docs/SETUP.md).
 
 ## Quick Start
 
@@ -226,18 +236,20 @@ claude plugin install neural-claude-code@brolag --scope user
 # Check system health
 > /meta/brain
 
+# Switch output style
+> /output-style yaml
+
 # Ask questions
 > /question where is the authentication logic?
 
-# Create new agents
-> Create an agent for reviewing database schemas
+# Get multi-AI consensus
+> /ai-collab Should we use REST or GraphQL?
 
 # Sync expertise after changes
 > /meta/improve project
-
-# Run tests
-> /meta/eval knowledge-management
 ```
+
+> **See also:** [Fullstack App Example](examples/fullstack-app-setup.md) for a complete walkthrough of using the plugin to build a React + Node.js app.
 
 ## Architecture
 
@@ -297,6 +309,10 @@ neural-claude-code-plugin/
 │   └── expertise.template.yaml
 ├── hooks/
 │   └── hooks.json           # Hook registrations
+├── docs/
+│   └── SETUP.md             # Complete setup guide
+├── examples/
+│   └── fullstack-app-setup.md # Real-world usage example
 ├── LICENSE
 ├── CHANGELOG.md
 └── README.md
@@ -325,12 +341,22 @@ neural-claude-code-plugin/
 
 ## Requirements
 
-- Claude Code CLI
-- `jq` (JSON processing)
-- Optional: Codex CLI (`codex`) for multi-AI
-- Optional: Gemini CLI (`gemini`) for multi-AI
-- Optional: Ollama with `llama3.2:1b` for agent names
-- Optional: `ELEVENLABS_API_KEY` for TTS
+| Requirement | Required | Purpose |
+|-------------|----------|---------|
+| Claude Code CLI | Yes | Core functionality |
+| `jq` | Yes | JSON processing for hooks |
+| Codex CLI | No | Multi-AI collaboration |
+| Gemini CLI | No | Multi-AI collaboration |
+| Ollama + llama3.2:1b | No | Creative agent names |
+| `ELEVENLABS_API_KEY` | No | Text-to-speech summaries |
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [Complete Setup Guide](docs/SETUP.md) | Step-by-step installation and configuration |
+| [Fullstack App Example](examples/fullstack-app-setup.md) | Real-world usage with React + Node.js |
+| [CHANGELOG](CHANGELOG.md) | Version history and changes |
 
 ## License
 
