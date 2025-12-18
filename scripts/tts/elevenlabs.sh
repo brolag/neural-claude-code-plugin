@@ -2,12 +2,12 @@
 # Text-to-Speech Script
 # Uses ElevenLabs API if available, falls back to macOS 'say' command
 
-# Extract ELEVENLABS env vars from shell config (safer than full source)
+# Extract ELEVENLABS env vars from shell config
 if [ -f "$HOME/.zshrc" ]; then
-  export $(grep -E '^export\s+ELEVENLABS' "$HOME/.zshrc" 2>/dev/null | sed 's/export //' | xargs) 2>/dev/null || true
+  eval "$(grep -E '^export\s+ELEVENLABS' "$HOME/.zshrc" 2>/dev/null)" 2>/dev/null || true
 fi
 if [ -f "$HOME/.bashrc" ]; then
-  export $(grep -E '^export\s+ELEVENLABS' "$HOME/.bashrc" 2>/dev/null | sed 's/export //' | xargs) 2>/dev/null || true
+  eval "$(grep -E '^export\s+ELEVENLABS' "$HOME/.bashrc" 2>/dev/null)" 2>/dev/null || true
 fi
 
 # Configuration
@@ -44,7 +44,7 @@ if [ -n "$API_KEY" ]; then
   log "Using ElevenLabs API"
 
   # Create temp file for audio
-  AUDIO_FILE=$(mktemp /tmp/claude-tts-XXXXXX.mp3)
+  AUDIO_FILE=$(mktemp /tmp/claude-tts-XXXXXXXXXX.mp3)
 
   # Call ElevenLabs API
   HTTP_STATUS=$(curl -s -w "%{http_code}" -o "$AUDIO_FILE" \

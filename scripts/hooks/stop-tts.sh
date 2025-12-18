@@ -4,7 +4,7 @@
 
 # Source user's shell config to get API keys
 if [ -f "$HOME/.zshrc" ]; then
-  export $(grep -E '^export\s+ELEVENLABS' "$HOME/.zshrc" 2>/dev/null | sed 's/export //' | xargs) 2>/dev/null || true
+  eval "$(grep -E '^export\s+ELEVENLABS' "$HOME/.zshrc" 2>/dev/null)" 2>/dev/null || true
 fi
 
 PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code-plugin}"
