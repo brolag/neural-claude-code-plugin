@@ -10,6 +10,12 @@ claude plugin marketplace add brolag/neural-claude-code-plugin
 
 # Step 2: Install the plugin
 claude plugin install neural-claude-code@brolag --scope user
+
+# Step 3: Set up hooks (enables TTS)
+export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code-plugin"
+bash "$CLAUDE_PLUGIN_ROOT/scripts/setup-hooks.sh"
+
+# Step 4: Restart Claude Code
 ```
 
 Or via slash commands in Claude Code:
@@ -18,7 +24,9 @@ Or via slash commands in Claude Code:
 /plugin install neural-claude-code@brolag --scope user
 ```
 
-> **First time?** See the [Complete Setup Guide](docs/SETUP.md) for detailed instructions including prerequisites.
+Then run the hook setup script from your terminal.
+
+> **First time?** See the [Complete Setup Guide](docs/SETUP.md) for detailed instructions including prerequisites, ElevenLabs TTS, and Ollama setup.
 
 ## Features
 
@@ -279,6 +287,7 @@ neural-claude-code-plugin/
 │   ├── v2.sh
 │   └── v3.sh
 ├── scripts/
+│   ├── setup-hooks.sh       # One-time hook setup
 │   ├── hooks/
 │   │   ├── session-start.sh
 │   │   ├── user-prompt.sh

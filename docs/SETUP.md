@@ -6,11 +6,12 @@ This guide walks you through setting up the Neural Claude Code Plugin from scrat
 
 1. [Prerequisites](#prerequisites)
 2. [Plugin Installation](#plugin-installation)
-3. [Project Setup](#project-setup)
-4. [Optional: ElevenLabs TTS](#optional-elevenlabs-tts)
-5. [Optional: Ollama Agent Names](#optional-ollama-agent-names)
-6. [Optional: Multi-AI Setup](#optional-multi-ai-setup)
-7. [Verification](#verification)
+3. [Hook Setup](#hook-setup)
+4. [Project Setup](#project-setup)
+5. [Optional: ElevenLabs TTS](#optional-elevenlabs-tts)
+6. [Optional: Ollama Agent Names](#optional-ollama-agent-names)
+7. [Optional: Multi-AI Setup](#optional-multi-ai-setup)
+8. [Verification](#verification)
 
 ---
 
@@ -87,6 +88,70 @@ Or via slash command:
 | `user` | `~/.claude/plugins/` | Available in all your projects |
 | `project` | `.claude/plugins/` | Shared with team via git |
 | `local` | `.claude/plugins/` (gitignored) | Project-specific, not shared |
+
+---
+
+## Hook Setup
+
+Hooks enable TTS audio summaries and session tracking. This is a **one-time setup** that applies globally.
+
+### Option A: Automated Setup (Recommended)
+
+Run the setup script:
+
+```bash
+# Set the plugin location (adjust path if different)
+export CLAUDE_PLUGIN_ROOT="$HOME/Sites/neural-claude-code-plugin"
+
+# Run setup
+bash "$CLAUDE_PLUGIN_ROOT/scripts/setup-hooks.sh"
+```
+
+The script will:
+- Back up your existing settings
+- Add TTS hooks to `~/.claude/settings.json`
+- Verify your configuration
+
+### Option B: Manual Setup
+
+Edit `~/.claude/settings.json` and add the hooks section:
+
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": {},
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /path/to/neural-claude-code-plugin/scripts/hooks/stop-tts.sh",
+            "timeout": 15000
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+Replace `/path/to/neural-claude-code-plugin` with your actual plugin path.
+
+### Verify Hook Setup
+
+After setup, run in Claude Code:
+
+```
+/doctor
+```
+
+You should see no errors under "Invalid Settings". If you see hook-related errors, ensure:
+- The hook format uses `matcher` and `hooks` arrays (Claude Code 2.0+ format)
+- The script path is correct and executable
+
+### Restart Required
+
+**Important:** Restart Claude Code after setting up hooks for changes to take effect.
 
 ---
 
@@ -333,11 +398,45 @@ This shows system health and what's configured.
 claude plugin marketplace add brolag/neural-claude-code-plugin
 ```
 
+### Invalid Settings / Hook Errors
+
+```
+Invalid Settings
+└ hooks: Expected array, but received undefined
+```
+
+**Fix:** Claude Code 2.0+ requires a new hook format with `matcher` and `hooks` arrays:
+
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": {},
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash /path/to/script.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+Run the setup script to fix automatically:
+```bash
+bash "$CLAUDE_PLUGIN_ROOT/scripts/setup-hooks.sh"
+```
+
 ### TTS Not Working
 
-1. Check API key is set: `echo $ELEVENLABS_API_KEY`
-2. Check you're using TTS style: `/output-style tts`
-3. Check audio output on your system
+1. **Check hooks are set up:** Run `/doctor` - no errors should appear
+2. **Check API key is set:** `echo $ELEVENLABS_API_KEY`
+3. **Check script is executable:** `ls -la $CLAUDE_PLUGIN_ROOT/scripts/hooks/stop-tts.sh`
+4. **Check audio output:** Ensure your system audio is working
+5. **Restart Claude Code:** Hooks require a restart to take effect
 
 ### Agent Names Not Generating
 
