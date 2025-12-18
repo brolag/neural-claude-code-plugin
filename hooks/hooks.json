@@ -1,3 +1,26 @@
 {
-  "hooks": []
+  "description": "Neural Claude Code hooks for output styles, status lines, and TTS",
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/hooks/session-start.sh",
+        "timeout": 10000
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "type": "command",
+        "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/hooks/user-prompt.sh",
+        "timeout": 2000
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/hooks/stop-tts.sh",
+        "timeout": 15000
+      }
+    ]
+  }
 }

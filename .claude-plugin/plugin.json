@@ -1,7 +1,7 @@
 {
   "name": "neural-claude-code",
-  "version": "1.1.0",
-  "description": "Self-improving agentic system with meta-agents, meta-skills, expertise files, and multi-AI collaboration for Claude Code",
+  "version": "1.2.0",
+  "description": "Self-improving agentic system with output styles, status lines, TTS, meta-agents, and multi-AI collaboration for Claude Code",
   "author": {
     "name": "Alfredo Bonilla",
     "url": "https://github.com/brolag"
@@ -19,7 +19,11 @@
     "AI-collaboration",
     "agent-experts",
     "codex",
-    "gemini"
+    "gemini",
+    "output-styles",
+    "status-lines",
+    "tts",
+    "elevenlabs"
   ],
   "commands": "./commands/",
   "agents": "./agents/"

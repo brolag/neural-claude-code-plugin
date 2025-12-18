@@ -2,6 +2,64 @@
 
 All notable changes to the Neural Claude Code plugin will be documented here.
 
+## [1.2.0] - 2024-12-18
+
+### Added
+
+#### Output Styles System
+- **7 Output Styles** for different response formats:
+  - `default` - Standard conversational responses
+  - `table` - Organized markdown tables
+  - `yaml` - Highly structured YAML format (improves complex tasks)
+  - `concise` - Minimal tokens, maximum signal
+  - `tts` - Audio summary via ElevenLabs at response end
+  - `html` - Generate HTML documents, open in browser
+  - `genui` - Full generative UI with rich styling
+
+- **`/output-style` Command** - Switch styles mid-session
+  - Usage: `/output-style yaml`, `/output-style genui`
+
+#### Status Lines
+- **3 Status Line Versions** (`status-lines/`):
+  - `v1.sh` - Simple: model, directory, git branch
+  - `v2.sh` - + Last prompt with emoji indicators
+  - `v3.sh` - + Agent name + trailing prompts
+
+- **Emoji Indicators** for prompt types:
+  - ❓ Questions
+  - 💡 Create/build commands
+  - 🔧 Fix/debug commands
+  - 🗑️ Delete/remove commands
+  - ✅ Test/verify commands
+
+#### ElevenLabs TTS Integration
+- **Text-to-Speech** on task completion
+- **Stop Hook** extracts `---TTS_SUMMARY---` markers
+- Automatic audio playback via `afplay` (macOS)
+
+#### Session State Management
+- **Session tracking** in `.claude/data/current-session.json`
+- **Agent name generation** via Ollama (llama3.2:1b)
+- **Prompt history** (last 5 prompts tracked)
+
+#### Hooks System
+- **SessionStart** - Initialize session, load output style, generate agent name
+- **UserPromptSubmit** - Track prompts in session state
+- **Stop** - TTS summary extraction and playback
+
+### Infrastructure
+- `output-styles/` - 7 output style prompt files
+- `status-lines/` - 3 status line scripts
+- `scripts/hooks/` - Hook scripts (session-start, user-prompt, stop-tts)
+- `scripts/tts/elevenlabs.sh` - ElevenLabs API wrapper
+- `scripts/utils/agent-name.sh` - Ollama agent name generator
+
+### Dependencies
+- **Required**: `jq` (JSON processing)
+- **Optional**: Ollama (agent names), ElevenLabs API key (TTS)
+
+---
+
 ## [1.1.0] - 2024-12-18
 
 ### Added
