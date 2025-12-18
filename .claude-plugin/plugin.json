@@ -1,0 +1,26 @@
+{
+  "name": "neural-claude-code",
+  "version": "1.0.0",
+  "description": "Self-improving agentic system with meta-agents, meta-skills, expertise files, and multi-AI collaboration for Claude Code",
+  "author": {
+    "name": "Alfredo Bonilla",
+    "url": "https://github.com/brolag"
+  },
+  "homepage": "https://github.com/brolag/neural-claude-code-plugin",
+  "repository": "https://github.com/brolag/neural-claude-code-plugin",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "agents",
+    "meta-agents",
+    "self-improving",
+    "second-brain",
+    "productivity",
+    "AI-collaboration",
+    "agent-experts",
+    "codex",
+    "gemini"
+  ],
+  "commands": "./commands/",
+  "agents": "./agents/"
+}
