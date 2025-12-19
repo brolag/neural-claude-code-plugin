@@ -87,10 +87,12 @@ Creative agent names generated via Ollama (llama3.2:1b) to identify multiple Cla
 | Command | Purpose |
 |---------|---------|
 | `/question <anything>` | Answer any question (project, web, general) |
-| `/meta/prompt <name> <purpose>` | Create a new command |
-| `/meta/improve <name>` | Sync agent expertise with reality |
-| `/meta/eval <name>` | Run automated tests |
-| `/meta/brain` | View system health and status |
+| `/meta:agent <name> <purpose>` | Create a new project-specific agent |
+| `/meta:skill <name> <purpose>` | Create a new project-specific skill |
+| `/meta:prompt <name> <purpose>` | Create a new command |
+| `/meta:improve <name>` | Sync agent expertise with reality |
+| `/meta:eval <name>` | Run automated tests |
+| `/meta:brain` | View system health and status |
 
 ### Multi-AI Collaboration
 
