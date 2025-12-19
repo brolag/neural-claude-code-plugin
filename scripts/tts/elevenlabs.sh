@@ -43,8 +43,10 @@ TEXT=$(echo "$TEXT" | head -c 500)
 if [ -n "$API_KEY" ]; then
   log "Using ElevenLabs API"
 
-  # Create temp file for audio (macOS mktemp needs X's at the end)
-  AUDIO_FILE="$(mktemp /tmp/claude-tts-XXXXXXXXXX).mp3"
+  # Create temp file for audio
+  TEMP_BASE=$(mktemp /tmp/claude-tts-XXXXXXXXXX)
+  AUDIO_FILE="${TEMP_BASE}.mp3"
+  rm -f "$TEMP_BASE"  # Remove the placeholder file
 
   # Call ElevenLabs API
   HTTP_STATUS=$(curl -s -w "%{http_code}" -o "$AUDIO_FILE" \
