@@ -46,6 +46,8 @@ Standard structure with project-specific agents.
 ├── CLAUDE.md
 ├── settings.json
 ├── settings.local.json    # Personal (gitignored)
+├── data/
+│   └── current-session.json  # Agent name & session info
 ├── memory/
 │   ├── events/
 │   └── active_context.md
@@ -65,6 +67,8 @@ Complete Neural architecture with Agent Expert system.
 ├── CLAUDE.md
 ├── settings.json
 ├── settings.local.json
+├── data/
+│   └── current-session.json  # Agent name & session info
 ├── memory/
 │   ├── events/
 │   ├── facts/
@@ -231,14 +235,27 @@ Update your expertise file with:
 1. **Add to .gitignore**:
    ```
    .claude/settings.local.json
+   .claude/data/
    .claude/memory/events/
    .claude/logs/
    .claude/checkpoints/snapshots/
    ```
 
-2. **Initial expertise scan**: Run project-expert to populate expertise file
+2. **Initialize agent session**: Create `.claude/data/current-session.json` with:
+   - Unique session ID
+   - Generated feminine agent name (Luna, Zara, Nova, etc.)
+   - Project name
+   - Output style preference
 
-3. **Display quick start guide**
+   Run the session-start hook:
+   ```bash
+   PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code-plugin}"
+   bash "$PLUGIN_ROOT/scripts/hooks/session-start.sh"
+   ```
+
+3. **Initial expertise scan**: Run project-expert to populate expertise file
+
+4. **Display quick start guide** (including agent name)
 
 ## Quick Start Output
 
@@ -247,10 +264,12 @@ Update your expertise file with:
 
 **Level**: {level}
 **Project Type**: {type}
+**Agent Name**: {agent_name} (e.g., Luna, Zara, Nova)
 **Plugin Required**: neural-claude-code-plugin (global)
 
 ### Created
 - .claude/CLAUDE.md
+- .claude/data/current-session.json (agent: {agent_name})
 - .claude/expertise/project.yaml
 - .claude/agents/project-expert.md
 - ...
