@@ -1,6 +1,7 @@
 #!/bin/bash
 # Session Start Hook
 # Initializes session state, generates agent name, loads output style
+# NOW WITH AUTO-EXPERTISE INJECTION (Learning Loop Fix #1)
 
 set -e
 
@@ -8,9 +9,13 @@ PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code-plugin}"
 DATA_DIR="$PWD/.claude/data"
 SESSION_FILE="$DATA_DIR/current-session.json"
 CONFIG_FILE="$PWD/.claude/settings.local.json"
+EXPERTISE_DIR="$PWD/.claude/expertise"
+MANIFEST_FILE="$EXPERTISE_DIR/manifest.yaml"
+MEMORY_DIR="$PWD/.claude/memory"
+EVENTS_DIR="$MEMORY_DIR/events"
 
-# Create data directory if needed
-mkdir -p "$DATA_DIR"
+# Create directories if needed
+mkdir -p "$DATA_DIR" "$EVENTS_DIR"
 
 # Generate session ID
 SESSION_ID="session-$(date +%s)-$$"
@@ -55,6 +60,53 @@ if [ -f "$STYLE_FILE" ]; then
   cat "$STYLE_FILE"
   echo ""
 fi
+
+# ============================================
+# AUTO-INJECT EXPERTISE (Learning Loop Fix #1)
+# ============================================
+# Ensures agents always have their mental models loaded
+
+inject_expertise() {
+    # Skip if no expertise directory
+    [ ! -d "$EXPERTISE_DIR" ] && return
+
+    local expertise_summary=""
+
+    # Check for manifest to load in dependency order
+    if [ -f "$MANIFEST_FILE" ]; then
+        LOAD_ORDER=$(grep -A 20 "load_order:" "$MANIFEST_FILE" 2>/dev/null | grep "^\s*-" | sed 's/.*- //' | tr '\n' ' ')
+    else
+        # Default: common expertise domains
+        LOAD_ORDER="second-brain knowledge-management cognitive-amplifier strategic-advisor"
+    fi
+
+    # Build expertise summary
+    for domain in $LOAD_ORDER; do
+        EXPERTISE_FILE="$EXPERTISE_DIR/${domain}.yaml"
+        if [ -f "$EXPERTISE_FILE" ]; then
+            DOMAIN=$(grep "^domain:" "$EXPERTISE_FILE" 2>/dev/null | cut -d':' -f2 | xargs)
+            VERSION=$(grep "^version:" "$EXPERTISE_FILE" 2>/dev/null | cut -d':' -f2 | xargs)
+            PATTERNS=$(grep -A 20 "patterns:" "$EXPERTISE_FILE" 2>/dev/null | grep "^\s*-" | head -3 | sed 's/.*- "//' | sed 's/"$//' | tr '\n' '; ')
+
+            expertise_summary="${expertise_summary}[${DOMAIN:-$domain} v${VERSION:-1}] "
+        fi
+    done
+
+    if [ -n "$expertise_summary" ]; then
+        echo ""
+        echo "# Expertise Loaded"
+        echo "$expertise_summary"
+        echo ""
+    fi
+}
+
+# Inject expertise if available
+inject_expertise
+
+# Log session start event for pattern analysis
+TODAY=$(date +%Y-%m-%d)
+SESSION_LOG="$EVENTS_DIR/$TODAY.jsonl"
+echo "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"event\":\"session_start\",\"session_id\":\"$SESSION_ID\",\"agent\":\"$AGENT_NAME\"}" >> "$SESSION_LOG" 2>/dev/null || true
 
 # Log session start
 echo "[Session $SESSION_ID started with agent '$AGENT_NAME' using '$OUTPUT_STYLE' style]" >&2
