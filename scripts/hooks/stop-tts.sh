@@ -1,7 +1,7 @@
 #!/bin/bash
 # Stop Hook - TTS Summary
 # Extracts TTS summary from transcript and plays via ElevenLabs
-# Supports multi-voice with agent identification
+# Supports per-project voice assignment with bilingual support
 
 # Source user's shell config to get API keys
 if [ -f "$HOME/.zshrc" ]; then
@@ -24,60 +24,54 @@ if [ -z "$CWD" ]; then
   CWD="$PWD"
 fi
 
-# Read agent name from session file
-SESSION_FILE="$CWD/.claude/data/current-session.json"
-if [ -f "$SESSION_FILE" ]; then
-  AGENT_NAME=$(jq -r '.agent_name // "Agent"' "$SESSION_FILE" 2>/dev/null)
-else
-  AGENT_NAME="Agent"
-fi
-log_debug "Agent name: $AGENT_NAME"
+# Extract project name from directory path
+PROJECT_NAME=$(basename "$CWD")
+log_debug "Project: $PROJECT_NAME"
 
-# Voice configuration - female voices only
+# Voice configuration
 VOICE_CONFIG="$HOME/.claude/tts-voices.json"
 
-# Create default config with female voices if missing
+# Create default config with bilingual voices if missing
 if [ ! -f "$VOICE_CONFIG" ]; then
   mkdir -p "$HOME/.claude"
   cat > "$VOICE_CONFIG" << 'VOICES'
 {
   "voice_pool": [
-    {"id": "21m00Tcm4TlvDq8ikWAM", "name": "Rachel"},
-    {"id": "EXAVITQu4vr4xnSDxMaL", "name": "Bella"},
-    {"id": "AZnzlk1XvdvUeBnXmlld", "name": "Domi"},
-    {"id": "MF3mGyEYCl7XYWbV9V6O", "name": "Elli"},
-    {"id": "jBpfuIE2acCO8z3wKNLl", "name": "Gigi"},
-    {"id": "oWAxZDx7w5VEj9dCyTzz", "name": "Grace"},
-    {"id": "XB0fDUnXU5powFXDhCwa", "name": "Charlotte"},
-    {"id": "pFZP5JQG7iQjIQuC4Bk1", "name": "Lily"}
+    {"id": "XB7hH8MSUJpSbSDYk0k2", "name": "Dorothy", "languages": ["en", "es"]},
+    {"id": "oWAxZDx7w5VEj9dCyTzz", "name": "Grace", "languages": ["en", "es"]},
+    {"id": "z9fAnlkpzviPz146aGWa", "name": "Glinda", "languages": ["en", "es"]},
+    {"id": "21m00Tcm4TlvDq8ikWAM", "name": "Rachel", "languages": ["en", "es"]}
   ],
-  "agent_voices": {},
+  "project_voices": {},
+  "default_voice": "XB7hH8MSUJpSbSDYk0k2",
+  "model": "eleven_multilingual_v2",
   "announce": true
 }
 VOICES
-  log_debug "Created voice config with female voices"
+  log_debug "Created voice config with bilingual voices"
 fi
 
-# Get or assign voice for this agent
-VOICE_ID=$(jq -r --arg agent "$AGENT_NAME" '.agent_voices[$agent] // empty' "$VOICE_CONFIG" 2>/dev/null)
+# Priority: project_voices > default_voice > first in pool
+VOICE_ID=$(jq -r --arg project "$PROJECT_NAME" '.project_voices[$project] // empty' "$VOICE_CONFIG" 2>/dev/null)
 
 if [ -z "$VOICE_ID" ]; then
-  # Auto-assign: pick random voice from pool
-  POOL_SIZE=$(jq '.voice_pool | length' "$VOICE_CONFIG")
-  RANDOM_IDX=$((RANDOM % POOL_SIZE))
-  VOICE_ID=$(jq -r ".voice_pool[$RANDOM_IDX].id" "$VOICE_CONFIG")
-  VOICE_NAME=$(jq -r ".voice_pool[$RANDOM_IDX].name" "$VOICE_CONFIG")
+  # Try default voice
+  VOICE_ID=$(jq -r '.default_voice // empty' "$VOICE_CONFIG" 2>/dev/null)
+fi
 
-  log_debug "Auto-assigned voice $VOICE_NAME ($VOICE_ID) to agent $AGENT_NAME"
+if [ -z "$VOICE_ID" ]; then
+  # Fallback to first voice in pool
+  VOICE_ID=$(jq -r '.voice_pool[0].id' "$VOICE_CONFIG" 2>/dev/null)
+fi
 
-  # Save assignment
-  jq --arg agent "$AGENT_NAME" --arg voice "$VOICE_ID" \
-    '.agent_voices[$agent] = $voice' "$VOICE_CONFIG" > "$VOICE_CONFIG.tmp" && \
-    mv "$VOICE_CONFIG.tmp" "$VOICE_CONFIG"
+# Get voice name for announcement
+VOICE_NAME=$(jq -r --arg id "$VOICE_ID" '.voice_pool[] | select(.id == $id) | .name // "Assistant"' "$VOICE_CONFIG" 2>/dev/null)
+if [ -z "$VOICE_NAME" ] || [ "$VOICE_NAME" = "null" ]; then
+  VOICE_NAME="Assistant"
 fi
 
 export ELEVENLABS_VOICE_ID="$VOICE_ID"
-log_debug "Using voice: $VOICE_ID"
+log_debug "Using voice: $VOICE_NAME ($VOICE_ID) for project: $PROJECT_NAME"
 
 # Extract transcript_path from JSON
 TRANSCRIPT_PATH=$(echo "$HOOK_DATA" | jq -r '.transcript_path // empty' 2>/dev/null)
@@ -97,15 +91,26 @@ fi
 
 log_debug "Reading transcript: $TRANSCRIPT_PATH"
 
-# Find last assistant message with TTS markers in TEXT content (not tool_use)
-TTS_TEXT=$(grep 'TTS_SUMMARY' "$TRANSCRIPT_PATH" | \
-  grep '"role":"assistant"' | \
-  grep '"type":"text"' | \
-  tail -1 | \
-  jq -r '.message.content[] | select(.type=="text") | .text' 2>/dev/null | \
-  awk '/---TTS_SUMMARY---/{flag=1; next} /---END_TTS---/{flag=0} flag' | \
-  tr '\n' ' ' | \
-  xargs)
+# Wait for transcript to be fully written (race condition fix)
+# Try up to 3 times with increasing delays
+TTS_TEXT=""
+for i in 1 2 3; do
+  sleep 1
+  TTS_TEXT=$(grep 'TTS_SUMMARY' "$TRANSCRIPT_PATH" | \
+    grep '"role":"assistant"' | \
+    grep '"type":"text"' | \
+    tail -1 | \
+    jq -r '.message.content[] | select(.type=="text") | .text' 2>/dev/null | \
+    awk '/---TTS_SUMMARY---/{flag=1; next} /---END_TTS---/{flag=0} flag' | \
+    tr '\n' ' ' | \
+    sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+  if [ -n "$TTS_TEXT" ]; then
+    log_debug "Found TTS text on attempt $i"
+    break
+  fi
+  log_debug "Attempt $i: TTS text empty, retrying..."
+done
 
 log_debug "Extracted TTS text: $TTS_TEXT"
 
@@ -115,8 +120,11 @@ if [ -z "$TTS_TEXT" ]; then
   exit 0
 fi
 
-# Prepend agent announcement
-TTS_TEXT="$AGENT_NAME reporting. $TTS_TEXT"
+# Check if announcement is enabled
+ANNOUNCE=$(jq -r '.announce // true' "$VOICE_CONFIG" 2>/dev/null)
+if [ "$ANNOUNCE" = "true" ]; then
+  TTS_TEXT="$VOICE_NAME reporting. $TTS_TEXT"
+fi
 log_debug "Final TTS text: $TTS_TEXT"
 
 # Call ElevenLabs TTS script

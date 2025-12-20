@@ -12,7 +12,7 @@ fi
 
 # Configuration
 VOICE_ID="${ELEVENLABS_VOICE_ID:-21m00Tcm4TlvDq8ikWAM}"  # Rachel voice
-MODEL_ID="${ELEVENLABS_MODEL_ID:-eleven_monolingual_v1}"
+MODEL_ID="${ELEVENLABS_MODEL_ID:-eleven_multilingual_v2}"
 API_KEY="${ELEVENLABS_API_KEY:-}"
 TTS_LOG="${CLAUDE_TTS_LOG:-/tmp/claude-tts.log}"
 USE_FALLBACK="${CLAUDE_TTS_FALLBACK:-true}"  # Use macOS say as fallback
