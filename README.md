@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-1.2.0-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.3.0-ec4899?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -323,6 +323,29 @@ Switch how Claude responds mid-session:
 > /ai-collab What's the best caching strategy for this API?
 ```
 
+#### Plan-Execute Pattern (Opus + Gemini)
+
+For complex multi-step tasks, use orchestrated execution:
+
+```bash
+> /plan-execute Add user authentication with JWT tokens
+
+# What happens:
+# 1. Opus 4.5 analyzes and creates detailed plan
+# 2. Simple steps routed to Gemini Flash (fast + cheap)
+# 3. Complex steps kept in Opus (accuracy)
+# 4. Opus reviews final results
+
+# Cost savings: ~60-70% vs Opus-only
+```
+
+```
+┌────────────────┐     ┌────────────────┐     ┌────────────────┐
+│  OPUS 4.5      │     │  GEMINI FLASH  │     │  OPUS 4.5      │
+│  (Planning)    │ ──▶ │  (Execution)   │ ──▶ │  (Review)      │
+└────────────────┘     └────────────────┘     └────────────────┘
+```
+
 #### Intelligent Routing
 
 The system automatically routes based on task type:
@@ -332,6 +355,7 @@ The system automatically routes based on task type:
 | Algorithm/math | Gemini | Highest Elo rating |
 | Architecture | Claude | Best SWE-bench score |
 | DevOps/CLI | Codex | Terminal-Bench leader |
+| Complex multi-step | Opus→Gemini→Opus | Cost optimization |
 | Critical decisions | All three | Maximum validation |
 
 ---
@@ -375,6 +399,7 @@ The system automatically routes based on task type:
 | Command | Description |
 |---------|-------------|
 | `/ai-collab <problem>` | Get all AI perspectives |
+| `/plan-execute <task>` | Opus plans + Gemini executes (60% cheaper) |
 | `Ask Codex to...` | Route to Codex |
 | `Ask Gemini to...` | Route to Gemini |
 

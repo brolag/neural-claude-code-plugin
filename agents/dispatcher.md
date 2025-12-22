@@ -93,6 +93,32 @@ Process directly (you are Claude)
 }
 ```
 
+## Plan-Execute Pattern
+
+For complex multi-step tasks, use the **Opus+Gemini orchestration**:
+
+```
+┌────────────────┐     ┌────────────────┐     ┌────────────────┐
+│  OPUS 4.5      │     │  GEMINI FLASH  │     │  OPUS 4.5      │
+│  (Planning)    │ ──▶ │  (Execution)   │ ──▶ │  (Review)      │
+└────────────────┘     └────────────────┘     └────────────────┘
+```
+
+**When to use:**
+- Tasks with 5+ steps
+- Mixed complexity (some steps simple, some complex)
+- Cost optimization needed (Gemini is cheaper for execution)
+
+**How:**
+1. Plan with Opus (break into steps, classify each)
+2. Route simple steps to Gemini: `gemini -y "<step>"`
+3. Keep complex steps in Opus
+4. Review results with Opus
+
+**Cost savings:** ~60-70% on large tasks
+
+Use `/plan-execute <task>` to trigger this pattern automatically.
+
 ## Consensus Protocol
 
 For high-stakes decisions:
