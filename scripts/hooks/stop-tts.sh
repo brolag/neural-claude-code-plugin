@@ -10,6 +10,7 @@ fi
 
 PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$HOME/Sites/neural-claude-code-plugin}"
 DEBUG_LOG="/tmp/stop-tts-debug.log"
+TTS_CACHE_DIR="/tmp/tts-cache"
 
 log_debug() {
   echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$DEBUG_LOG"
@@ -119,6 +120,21 @@ if [ -z "$TTS_TEXT" ]; then
   log_debug "TTS text is empty"
   exit 0
 fi
+
+# Deduplication: Check if this exact TTS was already played
+mkdir -p "$TTS_CACHE_DIR"
+TTS_CACHE="$TTS_CACHE_DIR/last-played-${PROJECT_NAME}.txt"
+TTS_HASH=$(echo "$TTS_TEXT" | md5)
+LAST_HASH=$(cat "$TTS_CACHE" 2>/dev/null || echo "")
+
+if [ "$TTS_HASH" = "$LAST_HASH" ]; then
+  log_debug "TTS already played (duplicate hash: $TTS_HASH), skipping"
+  exit 0
+fi
+
+# Save hash for next time
+echo "$TTS_HASH" > "$TTS_CACHE"
+log_debug "New TTS hash saved: $TTS_HASH"
 
 # Check if announcement is enabled
 ANNOUNCE=$(jq -r '.announce // true' "$VOICE_CONFIG" 2>/dev/null)
