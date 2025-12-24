@@ -46,6 +46,83 @@ Neural Claude:  Execute → Learn → Get smarter every session
 
 ---
 
+## ✨ Feature Highlights
+
+<table>
+<tr>
+<td width="50%">
+
+### 🧠 Self-Learning System
+Agents that remember and improve from every interaction. No more repeating context.
+
+</td>
+<td width="50%">
+
+### 🤖 Multi-AI Orchestration
+Route tasks to Claude, Codex, or Gemini based on their strengths.
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 📺 YouTube Learning
+Transform any video into structured knowledge notes with `/yt-learn`.
+
+</td>
+<td width="50%">
+
+### 🎨 7 Output Styles
+Switch between default, YAML, table, concise, TTS, HTML, and genUI modes.
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 💾 Persistent Memory
+Facts, patterns, and preferences survive across sessions.
+
+</td>
+<td width="50%">
+
+### 📊 Pattern Detection
+`/evolve` analyzes workflows and suggests automations.
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🔧 Meta-Agentics
+Create custom agents and skills with `/meta:agent` and `/meta:skill`.
+
+</td>
+<td width="50%">
+
+### 🗣️ Text-to-Speech
+Audio summaries via ElevenLabs at task completion.
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 📝 Prompt Engineering
+CRISP-E framework for prompt quality assessment and improvement.
+
+</td>
+<td width="50%">
+
+### 🌳 Git Worktrees
+Parallel development with `/wt-new`, `/wt-merge`, `/wt-clean`.
+
+</td>
+</tr>
+</table>
+
+---
+
 ## 🚀 Quick Start
 
 ### Installation (2 minutes)
