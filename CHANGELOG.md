@@ -7,6 +7,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.5.0] - 2024-12-24
+
+### Added
+
+#### YouTube Learner Skill
+- **`/yt-learn <url>`** - Transform YouTube videos into structured knowledge
+  - Extracts transcripts via Python script (youtube-transcript-api)
+  - Fetches video metadata via noembed API
+  - Generates actionable insights and key takeaways
+  - Creates organized knowledge notes with tags
+
+- **Transcript Extraction Script** (`scripts/youtube-transcript.py`)
+  - Supports multiple URL formats (youtube.com, youtu.be, embed)
+  - Auto-installs dependencies on first run
+  - Returns JSON with full transcript and timestamps
+  - Multi-language support (EN, ES, PT, DE, FR, IT)
+
+- **Knowledge Note Template**
+  - Key Insights section (3-5 main points)
+  - Main Concepts with explanations
+  - Actionable Takeaways as checklist
+  - Notable Quotes extraction
+  - Automatic tagging
+
+### Usage
+```bash
+# Basic usage
+/yt-learn https://youtube.com/watch?v=abc123
+
+# With focus area
+/yt-learn https://youtu.be/xyz789 --focus "productivity"
+
+# Quick summary only
+/yt-learn https://youtube.com/watch?v=def456 --summary
+```
+
+---
+
 ## [1.4.0] - 2024-12-23
 
 ### Added

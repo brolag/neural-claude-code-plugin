@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-1.4.0-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.5.0-ec4899?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -401,6 +401,12 @@ The system automatically routes based on task type:
 | `/output-style concise` | Minimal output |
 | `/output-style tts` | With audio summary |
 | `/output-style html` | Generate HTML |
+
+### Learning Commands
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `/yt-learn <url>` | Extract YouTube video into knowledge note | `/yt-learn https://youtube.com/watch?v=abc` |
 
 ### AI Collaboration
 
