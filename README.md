@@ -573,6 +573,7 @@ export ELEVENLABS_API_KEY="your-key"
 |----------|-------------|
 | [🌐 Landing Page](https://brolag.github.io/neural-claude-code-plugin) | Interactive guide with installation |
 | [📖 Installation Guide](https://brolag.github.io/neural-claude-code-plugin/#installation) | Step-by-step setup |
+| [🎯 Task Tool Guide](docs/TASK_TOOL_GUIDE.md) | When to use sub-agents vs direct tools |
 | [📋 Changelog](CHANGELOG.md) | Version history |
 
 ---
