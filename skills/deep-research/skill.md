@@ -1,80 +1,211 @@
 ---
+name: deep-research
 description: Conduct comprehensive multi-source research with systematic analysis and knowledge integration. Use when user needs thorough investigation, deep dive analysis, or research on complex topics.
-allowed-tools: Read, Write, Edit, Glob, Grep, WebSearch, WebFetch
+allowed-tools: Read, Write, Edit, Glob, Grep, WebSearch, WebFetch, Task
 ---
 
 # Deep Research Skill
 
-Systematic multi-source research with analysis and knowledge integration.
+Comprehensive research using four-phase orchestration with parallel execution and dependency-aware task management.
 
-## When Claude Should Use This Skill
+## Architecture
 
-- User mentions "research", "investigate", "deep dive"
-- User asks for "comprehensive analysis", "thorough investigation"
+```
+┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│  UNDERSTAND  │ -> │    PLAN      │ -> │   EXECUTE    │ -> │  SYNTHESIZE  │
+│  Extract     │    │  Create task │    │  Parallel    │    │  Compile     │
+│  intent &    │    │  list with   │    │  execution   │    │  findings    │
+│  scope       │    │  dependencies│    │  of tasks    │    │              │
+└──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
+```
+
+## When to Use
+
+- "Research X thoroughly"
+- "Deep dive into Y"
+- "Investigate Z from multiple angles"
+- "Compare different approaches to..."
 - Complex topics requiring multiple source validation
-- User needs current information beyond knowledge cutoff
 - Technical evaluation or comparison tasks
 
-## Research Protocol
+## Phase 0: Check Existing Knowledge (REQUIRED)
 
-### Phase 1: Planning & Scoping
-```xml
-<research_scope>
-- Define primary research question
-- Identify 3-5 key subtopics
-- Determine credible source types needed
-- Set depth and breadth parameters
-</research_scope>
+**Before any research, check if knowledge already exists:**
+
+1. Review learnings summary (loaded at session start)
+2. Use `/recall <topic>` to search existing learnings
+3. Check `inbox/*.md` for previous research on this topic
+
+If relevant knowledge exists:
+- Build on it, don't duplicate
+- Reference existing findings
+- Focus on gaps or updates needed
+
+**Never re-research what's already learned.**
+
+## Phase 1: Understand
+
+Extract intent and scope from the research question:
+
+```yaml
+understanding:
+  intent: "What the user wants to know"
+  entities:
+    - type: topic | comparison | person | company | technology
+      value: "extracted entity"
+  scope: narrow | medium | broad
+  domain: business | technology | finance | health | general
 ```
 
-### Phase 2: Multi-Source Investigation
-Execute **minimum 5 web searches** with progressive refinement:
+**Output**: Clear statement of what we're researching and why.
 
-1. **Broad overview**: "{topic} comprehensive guide 2025"
-2. **Academic/expert**: "{topic} research papers expert analysis"
-3. **Current trends**: "{topic} latest developments 2025"
-4. **Practical applications**: "{topic} implementation case studies"
-5. **Critical perspectives**: "{topic} challenges limitations"
+## Phase 2: Plan
 
-### Phase 3: Analysis
-For each source, document:
-- **Credibility**: Source authority and recency
-- **Key insights**: 3-5 main findings
-- **Contradictions**: Conflicting information
-- **Gaps**: Information still needed
+Create 3-6 research tasks with dependencies:
 
-### Phase 4: Knowledge Synthesis
-Cross-reference with vault:
-- Search `03_resources/` for related content
-- Check `01_projects/` for relevant context
-- Identify connections to current work
+```yaml
+tasks:
+  - id: "task-1"
+    description: "MAX 10 words - what to find"
+    type: web_search | source_fetch | ai_consult | analyze
+    dependsOn: []  # or ["task-1", "task-2"]
 
-### Phase 5: Documentation
-Create structured output:
-```
-03_resources/Research/
-└── {Topic}_Research_{Date}.md
-    ├── Executive Summary
-    ├── Key Findings
-    ├── Source Analysis
-    ├── Contradictions & Gaps
-    ├── Connections to Projects
-    ├── Action Items
-    └── Bibliography
+# Task types:
+# - web_search: Use WebSearch tool
+# - source_fetch: Use WebFetch on specific URL
+# - ai_consult: Get perspective from other AI (Gemini/Codex)
+# - analyze: Synthesize gathered data
 ```
 
-## Quality Standards
+**Constraints**:
+- Maximum 6 tasks (prevents over-planning)
+- Task descriptions under 10 words
+- `analyze` tasks must depend on data-gathering tasks
+- Tools selected at execution time, not planning time
 
-- Minimum 5 web searches
-- 3+ credible sources per major finding
-- Cross-validation of key claims
+**Search Query Patterns**:
+1. Broad overview: `"{topic} comprehensive guide 2025"`
+2. Expert analysis: `"{topic} research expert analysis"`
+3. Current trends: `"{topic} latest developments 2025"`
+4. Practical: `"{topic} implementation case studies"`
+5. Critical: `"{topic} challenges limitations"`
+
+## Phase 3: Execute
+
+Run tasks respecting dependencies:
+
+```
+1. Identify tasks with satisfied dependencies
+2. Execute them in parallel (use Task tool for agents)
+3. Store results keyed by task ID
+4. Repeat until all tasks complete
+```
+
+**Parallel Execution Rules**:
+- Independent `web_search` tasks run simultaneously
+- `analyze` waits for its dependencies
+- `ai_consult` can run parallel to searches
+
+**Just-in-Time Tool Selection**:
+| Task Type | Tools Selected |
+|-----------|----------------|
+| web_search | WebSearch |
+| source_fetch | WebFetch |
+| ai_consult | Task (gemini/codex agent) |
+| analyze | Read gathered data, synthesize |
+
+## Phase 4: Synthesize
+
+Compile findings into structured output:
+
+```markdown
+# Research Report: [Topic]
+
+## Executive Summary
+[2-3 sentences - FIRST SENTENCE IS THE MAIN FINDING]
+
+## Key Findings
+1. Finding with specific data/numbers
+2. Finding with source attribution
+3. Finding with confidence level
+
+## Detailed Analysis
+### [Theme 1]
+[Analysis with citations]
+
+### [Theme 2]
+[Analysis with citations]
+
+## Sources
+- [Source Title](url) - [what it contributed]
+
+## Confidence Assessment
+- **Overall**: High/Medium/Low
+- **Data Quality**: [assessment]
+- **Source Agreement**: [how well sources align]
+
+## Connections
+- Links to existing vault content
+- Related projects or notes
+
+## Open Questions
+- Unanswered question 1
+- Area needing more research
+```
+
+## Output Validation
+
+Research outputs must include:
+
+```yaml
+required:
+  - executive_summary: "2-3 sentences, main finding first"
+  - key_findings: "3-5 findings with evidence"
+  - sources: "minimum 3, with URLs"
+  - confidence: "high | medium | low with reasoning"
+
+optional:
+  - detailed_analysis: "organized by theme"
+  - connections: "links to vault content"
+  - open_questions: "what remains unknown"
+  - next_steps: "actionable recommendations"
+```
+
+## Multi-AI Integration
+
+For complex topics, plan includes `ai_consult` tasks:
+
+| AI | Strength | Use For |
+|----|----------|---------|
+| Claude | Nuanced analysis | Synthesis, edge cases |
+| Gemini | Fast, algorithmic | Quick facts, alternatives |
+| Codex | Implementation | Technical details, code |
+
+## Output Locations
+
+- Quick research → Memory fact
+- Deep research → `inbox/research-{date}-{topic}.md`
+- Vault integration → `03_resources/Research/`
+- Project-specific → `research/` directory in project
+
+## Quality Criteria
+
+- Minimum 3 independent sources
+- Cross-verified key facts
+- Specific numbers/data where available
+- Clear confidence levels
+- Main finding in first sentence
 - Explicit uncertainty acknowledgment
-- Actionable insights extraction
 
-## Output Deliverables
+## Examples
 
-1. **Research MOC**: Comprehensive overview
-2. **Subtopic Notes**: Detailed findings
-3. **Connection Map**: Links to vault content
-4. **Action Plan**: Next steps
-5. **Source Repository**: Organized bibliography
+```bash
+# Basic research - 3-4 tasks
+/research "best practices for micro SaaS pricing 2025"
+
+# Comparative - 4-5 tasks with parallel searches
+/research "compare Stripe vs Lemon Squeezy for indie developers"
+
+# Technical deep dive - 5-6 tasks with AI consultation
+/research "agentic coding patterns 2025"
+```

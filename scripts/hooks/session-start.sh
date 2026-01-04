@@ -103,6 +103,40 @@ inject_expertise() {
 # Inject expertise if available
 inject_expertise
 
+# ============================================
+# AUTO-INJECT LEARNINGS (Learning Loop Fix #2)
+# ============================================
+# Loads compact learnings summary into context
+
+inject_learnings() {
+    LEARNINGS_SUMMARY="$MEMORY_DIR/learnings/summary.md"
+
+    # Skip if no learnings summary
+    [ ! -f "$LEARNINGS_SUMMARY" ] && return
+
+    # Check if summary is recent (within 7 days)
+    if [ -f "$LEARNINGS_SUMMARY" ]; then
+        SUMMARY_AGE=$(( ($(date +%s) - $(stat -f %m "$LEARNINGS_SUMMARY" 2>/dev/null || echo 0)) / 86400 ))
+
+        echo ""
+        echo "# Recent Learnings"
+
+        if [ "$SUMMARY_AGE" -gt 7 ]; then
+            echo "*Summary is ${SUMMARY_AGE} days old - run index-learnings.sh to refresh*"
+            echo ""
+        fi
+
+        # Output just the key sections (skip header, keep under ~400 tokens)
+        sed -n '/^## Recent Knowledge/,/^## Domains Covered/p' "$LEARNINGS_SUMMARY" | head -30
+        echo ""
+        echo "*Full details: /recall <topic>*"
+        echo ""
+    fi
+}
+
+# Inject learnings if available
+inject_learnings
+
 # Log session start event for pattern analysis
 TODAY=$(date +%Y-%m-%d)
 SESSION_LOG="$EVENTS_DIR/$TODAY.jsonl"
