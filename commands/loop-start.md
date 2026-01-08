@@ -2,56 +2,142 @@
 
 Start an autonomous iteration loop that continues until completion or max iterations.
 
+## Version 2.0
+
+Neural Loop v2 incorporates learnings from:
+- **Ralph Wiggum** (Matt Pocock) - 11 tips for autonomous coding
+- **Anthropic Engineering** - Effective harnesses for long-running agents
+- **Vercel v0** - Multi-system pipeline architecture
+
 ## Usage
 
 ```
-/loop-start "<task description>" [--max <n>] [--promise "<text>"]
+/loop-start "<task description>" [options]
 ```
 
-## Arguments
+## Options
 
-- `task description` - The task for Claude to work on iteratively
-- `--max <n>` - Maximum iterations (default: 20)
-- `--promise "<text>"` - Completion phrase to output when done (default: LOOP_COMPLETE)
+| Option | Default | Description |
+|--------|---------|-------------|
+| `--max <n>` | 20 | Maximum iterations |
+| `--promise "<text>"` | LOOP_COMPLETE | Completion phrase |
+| `--sandbox` | false | Run in Docker sandbox (AFK safety) |
+| `--type <type>` | feature | Loop type: feature, coverage, lint, entropy |
+| `--init` | false | Run /loop-init first to generate features.json |
 
 ## Examples
 
-```
-/loop-start "Implement user authentication with tests" --max 30 --promise "AUTH_COMPLETE"
+```bash
+# Basic feature loop
+/loop-start "Implement user authentication with tests" --max 30
 
-/loop-start "Fix all TypeScript errors in src/" --max 10
+# With Docker sandbox for AFK work
+/loop-start "Refactor database layer" --sandbox --max 50
 
-/loop-start "Build REST API with CRUD, validation, and tests" --promise "API_DONE"
+# Test coverage loop
+/loop-start "Increase test coverage to 80%" --type coverage --max 20
+
+# Linting cleanup loop
+/loop-start "Fix all ESLint errors" --type lint
+
+# Initialize first, then start
+/loop-start "Build REST API with CRUD" --init --promise "API_DONE"
 ```
 
 ## Prompt
 
 Parse the user's arguments to extract:
-1. The task description (required)
-2. Max iterations (look for --max, default 20)
-3. Completion promise (look for --promise, default LOOP_COMPLETE)
+1. Task description (required)
+2. Max iterations (--max, default 20)
+3. Completion promise (--promise, default LOOP_COMPLETE)
+4. Sandbox mode (--sandbox, default false)
+5. Loop type (--type, default feature)
+6. Initialize first (--init, default false)
 
 Execute:
 ```bash
-bash .claude/scripts/neural-loop/start.sh "$TASK" "$MAX" "$PROMISE"
+bash .claude/scripts/neural-loop/start.sh "$TASK" "$MAX" "$PROMISE" "$TYPE" "$SANDBOX"
 ```
 
-Then begin working on the task. The Stop hook will intercept exit attempts and re-inject the prompt until:
-- You output the completion promise phrase
-- Max iterations are reached
-- User runs /loop-cancel
+## How It Works (v2)
 
-## How It Works
+### Iteration Flow
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    NEURAL LOOP v2                            │
+├─────────────────────────────────────────────────────────────┤
+│  1. Read features.json → Pick next incomplete feature        │
+│  2. Work on SINGLE feature (small steps)                     │
+│  3. Run feedback loops (types, tests, lint)                  │
+│  4. Mark feature passes: true in features.json               │
+│  5. Append to progress.txt                                   │
+│  6. Commit changes                                           │
+│  7. Stop hook checks for <promise>COMPLETE</promise>         │
+│  8. If not complete → re-inject prompt with context          │
+└─────────────────────────────────────────────────────────────┘
+```
 
-1. You work on the task
-2. When you finish responding, the Stop hook fires
-3. Tests run automatically (if detected)
-4. If completion promise not found, prompt is re-injected with test results
-5. Continue iterating until done
+### Key Principles (from Ralph Wiggum)
+
+1. **Agent picks the task** - Claude decides priority, not strict order
+2. **Progress file for memory** - Cheaper than re-exploring codebase
+3. **Promise-based exit** - Output `<promise>COMPLETE</promise>` when done
+4. **Single feature per iteration** - Prevents context exhaustion
+5. **Small steps** - Context rot makes large tasks worse
+6. **Prioritize risky tasks** - Architectural work first
+
+### Files Used
+
+| File | Purpose |
+|------|---------|
+| `.claude/loop/features.json` | Feature tracking with passes field |
+| `.claude/loop/progress.txt` | Human-readable iteration log |
+
+## Loop Types
+
+### feature (default)
+Work through features.json items sequentially by priority.
+
+### coverage
+Target test coverage percentage. Use `/loop-coverage` for specialized version.
+
+### lint
+Fix linting errors one at a time. Use `/loop-lint` for specialized version.
+
+### entropy
+Clean up code smells. Use `/loop-entropy` for specialized version.
+
+## Docker Sandbox (AFK Safety)
+
+For unsupervised AFK loops, use --sandbox:
+
+```bash
+/loop-start "Big refactor" --sandbox --max 50
+```
+
+This runs Claude Code inside a Docker container for safety.
 
 ## Best Practices
 
-1. **Clear success criteria** - Include testable goals
-2. **Use TDD** - Write tests first, then implement
-3. **Set reasonable max** - Start with 10-20 iterations
-4. **Atomic tasks** - Break into small steps
+### From Ralph Wiggum
+1. **Start HITL, then go AFK** - Learn the loop behavior first
+2. **Define scope explicitly** - Vague tasks risk infinite loops
+3. **Use feedback loops** - Types, tests, linting as guardrails
+4. **Take small steps** - Quality over speed
+5. **Prioritize risky tasks** - Architecture first, polish last
+6. **Fight entropy** - Leave codebase better than you found it
+
+### Safety
+- Always set --max to cap iterations
+- Use --sandbox for AFK work
+- Use /loop-cancel if stuck
+- Check git status between iterations
+
+## Related Commands
+
+- `/loop-init` - Initialize features.json before starting
+- `/loop-status` - Check current loop state
+- `/loop-cancel` - Stop active loop
+- `/loop-coverage` - Specialized coverage loop
+- `/loop-lint` - Specialized linting loop
+- `/loop-entropy` - Specialized entropy cleanup loop

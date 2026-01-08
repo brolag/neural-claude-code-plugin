@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-1.7.1-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-2.0.0-ec4899?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -122,14 +122,14 @@ Parallel development with `/wt-new`, `/wt-merge`, `/wt-clean`.
 <tr>
 <td width="50%">
 
-### 🔄 Neural Loop
-Autonomous iteration with `/loop-start`. Run tasks for hours unattended.
+### 🔄 Neural Loop v2
+Autonomous iteration with `/loop-start`. Sandbox mode, specialized loops.
 
 </td>
 <td width="50%">
 
-### ✅ Test-on-Stop
-Auto-run tests when Claude stops. Feed failures back into the loop.
+### ✅ Loop Types
+Coverage, lint, entropy loops. Fight code rot automatically.
 
 </td>
 </tr>

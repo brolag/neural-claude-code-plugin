@@ -7,6 +7,66 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.0.0] - 2026-01-08
+
+### Neural Loop v2 - Major Upgrade
+
+Neural Loop v2 incorporates learnings from three authoritative sources:
+- **Ralph Wiggum** (Matt Pocock) - 11 tips for autonomous AI coding
+- **Anthropic Engineering** - Effective harnesses for long-running agents
+- **Vercel v0** - Multi-system pipeline architecture
+
+### Added
+
+#### Enhanced `/loop-start` with new options
+- **`--sandbox`** - Run in Docker container for AFK safety
+- **`--type <type>`** - Loop types: feature, coverage, lint, entropy
+- **`--init`** - Auto-run /loop-init before starting
+
+#### New Specialized Loop Commands
+- **`/loop-init`** - Initialize features.json and progress.txt before loops
+  - Breaks task into discrete features with passes: true/false tracking
+  - Creates structured progress file for inter-iteration memory
+  - Runs health checks before starting work
+
+- **`/loop-coverage`** - Test coverage improvement loop
+  - Targets specific coverage percentage
+  - Prioritizes critical code paths
+  - One test per iteration for quality
+
+- **`/loop-lint`** - Linting cleanup loop
+  - Fixes ONE error per iteration
+  - Verifies fix before moving on
+  - Auto-detects linter type
+
+- **`/loop-entropy`** - Code smell cleanup loop
+  - Fights software entropy
+  - Focus areas: unused, dead, patterns
+  - Leaves codebase better than found
+
+#### Key Principles (from Ralph Wiggum)
+1. **Agent picks the task** - Define end state, not steps
+2. **Progress file for memory** - Cheaper than re-exploring codebase
+3. **Promise-based exit** - `<promise>COMPLETE</promise>` pattern
+4. **Single feature per iteration** - Prevents context exhaustion
+5. **Small steps** - Context rot makes large tasks worse
+6. **Prioritize risky tasks** - Architecture first, polish last
+7. **Fight entropy** - Poor code leads to poorer code
+
+#### New Files
+- `commands/loop-init.md` - Initialize loop artifacts
+- `commands/loop-coverage.md` - Coverage-focused loop
+- `commands/loop-lint.md` - Linting-focused loop
+- `commands/loop-entropy.md` - Entropy cleanup loop
+- JSON schema for features.json tracking
+
+### Changed
+- `/loop-start` now supports v2 state format with loop_type, sandbox, features_file
+- Progress file location moved to `.claude/loop/progress.txt`
+- State file includes version field for compatibility
+
+---
+
 ## [1.7.1] - 2026-01-04
 
 ### Added
