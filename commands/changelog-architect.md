@@ -41,3 +41,40 @@ Outputs a comprehensive analysis with:
 - Synergy map with ratings
 - Concrete workflow recommendations
 - Skills/agents to create
+
+## Output Format
+
+```markdown
+# Changelog Architecture Analysis
+
+**Versions Analyzed**: [list]
+**Analysis Date**: [date]
+
+## New Capabilities Summary
+[Quick overview of what's new]
+
+## First Principles Breakdown
+| Feature | Core Capability | Constraints Removed |
+|---------|-----------------|---------------------|
+
+## Synergy Map
+| Existing | New | Potential | Rating |
+|----------|-----|-----------|--------|
+
+## High-Value Workflows
+1. **[Name]**: [Description]
+
+## Recommendations
+- [ ] Create skill: ...
+- [ ] Update config: ...
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Fetch failed | GitHub unavailable | Retry or use cached changelog |
+| No new versions | Already up to date | Check less frequently |
+| Parse error | Changelog format changed | Update parser logic |
+
+**Fallback**: If fetch fails, analyze local cached changelog if available.

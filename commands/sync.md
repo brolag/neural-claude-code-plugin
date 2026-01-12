@@ -8,6 +8,17 @@ argument-hint: [hooks|project|status|all] [--force]
 
 Sync the Neural Claude Code plugin to projects and manage global hooks.
 
+## Usage
+
+```bash
+/sync                            # Show sync status
+/sync hooks                      # Update global hooks only
+/sync project                    # Sync to current project
+/sync all                        # Sync hooks + project
+/sync project --force            # Overwrite existing files
+/sync all --dry-run              # Preview changes
+```
+
 ## Arguments
 
 `$ARGUMENTS` - Command and options
@@ -103,3 +114,37 @@ Show what was synced:
 
 **Commands missing?**
 - Run `/sync project --force` to refresh all commands
+
+## Output Format
+
+```markdown
+## Sync Results
+
+**Command**: [hooks|project|all]
+**Status**: [Success|Partial|Failed]
+
+### Updated
+- [file1] - Created
+- [file2] - Updated
+- [file3] - Skipped (exists)
+
+### Hooks Status
+| Hook | Path | Status |
+|------|------|--------|
+| SessionStart | ~/.claude/... | Active |
+
+### Next Steps
+1. Restart Claude Code to pick up new hooks
+2. Run `/recall` to verify learnings
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Plugin not found | Wrong path | Set CLAUDE_PLUGIN_ROOT env var |
+| Permission denied | File permissions | Check write access to ~/.claude |
+| File exists | Previous sync | Use `--force` to overwrite |
+| Script missing | Incomplete plugin | Re-clone plugin repository |
+
+**Fallback**: If script fails, show manual sync commands.

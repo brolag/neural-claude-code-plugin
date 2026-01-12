@@ -149,3 +149,44 @@ The loop should stop if:
 - Scope creep detected (working on unrelated files)
 
 If stuck, output: `LOOP_STUCK: [reason]` and stop.
+
+## Output Format
+
+```markdown
+## Loop Plan Ready
+
+**Task**: [description]
+**Complexity**: [Simple|Medium|Complex|Large]
+**Estimated Iterations**: [n]
+
+### Scope
+- [n] files affected
+- [list key files]
+
+### Phases
+1. **[Phase 1]**: [n] tasks
+2. **[Phase 2]**: [n] tasks
+3. **Finalize**: [n] tasks
+
+### Safety Parameters
+- Max iterations: [n]
+- Completion promise: LOOP_COMPLETE
+- Feature branch: [yes/no]
+
+### Risk Assessment
+- [risk 1]
+- [risk 2]
+
+**Ready to start?** (yes/no/adjust)
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Can't determine scope | Unclear task | Ask for more specifics |
+| Too many files | Task too broad | Break into smaller tasks |
+| No test runner | Can't validate | Set up testing first |
+| Conflicting changes | Git state dirty | Commit or stash changes |
+
+**Fallback**: If planning fails, create minimal todo.md with manual oversight.

@@ -58,6 +58,27 @@ Output: "Switched to **<style>** output style"
 /output-style default
 ```
 
+## Output Format
+
+```markdown
+## Output Style Changed
+
+**Previous**: [style]
+**Current**: [style]
+
+Style settings applied. All subsequent responses will use **[style]** formatting.
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Style not found | Invalid style name | Check available styles |
+| Settings file missing | First run | Creates settings.local.json |
+| Style file corrupt | Bad markdown | Reset style to default |
+
+**Fallback**: If style can't be loaded, use default style.
+
 ## Notes
 
 - Style persists for the session

@@ -133,6 +133,17 @@ Would analyze the Claude Code repository, focus on how skills work, and save lea
 - WebFetch for README if gh fails
 - Read/Write for saving learnings
 
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Repo not found | Wrong name or private | Verify owner/repo format |
+| Rate limited | Too many API calls | Wait 1 hour or use token |
+| gh CLI missing | Not installed | Run `brew install gh` |
+| No README | Repo has no documentation | Skip README analysis |
+
+**Fallback**: If gh CLI fails, try WebFetch on raw.githubusercontent.com.
+
 ## Notes
 
 - Respects GitHub API rate limits

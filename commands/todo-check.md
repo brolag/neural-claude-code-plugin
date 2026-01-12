@@ -48,3 +48,13 @@ Format the output:
 ```
 
 If todo.md doesn't exist, suggest running `/todo-new`.
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| todo.md not found | No todo created | Run `/todo-new` first |
+| Parse error | Invalid markdown format | Check todo.md syntax |
+| No tasks found | Empty or malformed | Recreate with `/todo-new` |
+
+**Fallback**: If parsing fails, show raw todo.md content.

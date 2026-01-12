@@ -5,7 +5,15 @@ allowed-tools: Task, Read, Glob, Grep
 
 # Parallel Verification Command
 
-Invoke: `/pv <problem>`
+AlphaGo-style parallel hypothesis exploration for complex problems.
+
+## Usage
+
+```bash
+/pv <problem>                    # Run parallel verification
+/pv <problem> --paths 5          # Use 5 hypotheses (default: 4)
+/pv <problem> --multi-ai         # Use different AI models per path
+```
 
 ## Description
 
@@ -120,3 +128,41 @@ For maximum verification, suggest using different models:
 - Path 4: Claude Opus (cross-check)
 
 Use `/ai-collab` integration if the user wants multi-model verification.
+
+## Output Format
+
+```markdown
+## Parallel Verification Results
+
+**Problem**: [Original problem]
+**Hypotheses Explored**: 4
+**Winning Approach**: [Name]
+
+### Solution
+[Complete solution with reasoning]
+
+### Confidence: [High/Medium/Low]
+
+### Why This Wins
+- [Evidence from verification]
+- [Strengths over alternatives]
+
+### Pruned Paths
+| Path | Reason for Elimination |
+|------|------------------------|
+| [Name] | [Why it failed] |
+
+### Remaining Uncertainties
+- [What we're not 100% sure about]
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| No hypotheses generated | Problem too vague | Rephrase with specific context |
+| All paths fail | Problem unsolvable with current info | Gather more data, retry |
+| Agents timeout | Complex exploration | Increase timeout or simplify |
+| Contradictory results | Ambiguous problem | Run verification phase again |
+
+**Fallback**: If parallel agents fail, fall back to sequential exploration.

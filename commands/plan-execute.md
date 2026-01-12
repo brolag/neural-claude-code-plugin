@@ -123,6 +123,17 @@ All criteria met. Dark mode functional.
 - path/to/file2
 ```
 
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Gemini CLI not found | Not installed | Install gemini CLI or route to Opus |
+| Step fails | Gemini error | Retry with Opus or skip |
+| Plan too complex | Too many steps | Break into sub-plans |
+| Dependency loop | Circular deps | Flatten dependencies |
+
+**Fallback**: If Gemini unavailable, execute all steps in Opus.
+
 ## Notes
 
 - Gemini excels at: file operations, simple code generation, running commands

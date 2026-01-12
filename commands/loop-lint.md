@@ -62,6 +62,38 @@ Automatically detected:
 3. **Don't auto-fix everything** - Some rules need human judgment
 4. **Commit frequently** - Easy rollback if something breaks
 
+## Output Format
+
+```markdown
+## Lint Loop Progress
+
+**Linter**: [eslint|tsc|ruff|...]
+**Errors Remaining**: [n]
+**Iteration**: [n] of [max]
+
+### Fixed This Session
+| File | Line | Rule | Fix |
+|------|------|------|-----|
+| src/app.ts | 42 | no-unused-vars | Removed unused import |
+
+### Remaining Errors
+- [file:line] - [rule] - [message]
+
+### Status
+[RUNNING | COMPLETE | MAX_ITERATIONS]
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Linter not found | Not installed | Install linter package |
+| Fix causes new error | Cascading issues | Revert, fix manually |
+| Rule not auto-fixable | Needs human judgment | Skip or disable rule |
+| Config missing | No .eslintrc/etc | Create config file |
+
+**Fallback**: If linter detection fails, ask user which linter to use.
+
 ## Related
 
 - `/loop-start` - General purpose loop

@@ -95,6 +95,17 @@ Tags: #learning #[topic]
 /yt-learn https://youtube.com/watch?v=xyz789 --summary
 ```
 
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Invalid URL | Not a YouTube URL | Provide valid youtube.com URL |
+| No transcript | Video has no captions | Try different video |
+| API rate limit | Too many requests | Wait and retry |
+| Package missing | youtube-transcript-api not installed | Auto-installs on first use |
+
+**Fallback**: If transcript API fails, try WebFetch on youtubetranscript.com.
+
 ## Dependencies
 
 Requires `youtube-transcript-api` Python package (auto-installed on first use).

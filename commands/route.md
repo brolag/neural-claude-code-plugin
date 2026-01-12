@@ -7,9 +7,13 @@ allowed-tools: Bash, Read, Write
 
 Analyze tasks and recommend the optimal AI model for cost/quality optimization.
 
-## Invoke
+## Usage
 
-`/route <task description>`
+```bash
+/route <task description>        # Get routing recommendation
+/route implement sorting algo    # Example: routes to Gemini
+/route review auth security      # Example: stays in Opus
+```
 
 ## Prompt
 
@@ -239,3 +243,14 @@ After routing, log the decision:
 ```
 
 Append to: `.claude/memory/costs.json`
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| CLI not found | Gemini/Codex not installed | Install CLI or stay in Opus |
+| Task unclear | Ambiguous description | Rephrase with specific action verbs |
+| API unavailable | External service down | Fall back to Opus |
+| Low confidence | Edge case task | Default to Opus for safety |
+
+**Fallback**: When uncertain, always recommend Opus (accuracy over savings).

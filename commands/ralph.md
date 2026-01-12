@@ -108,6 +108,28 @@ For advanced features, use `/loop` directly:
 /loop "task" --ai codex
 ```
 
+## Output Format
+
+```markdown
+## Ralph: [mode]
+
+**Task**: [description]
+**Mode**: [once|afk]
+**Iterations**: [1 or n]
+
+[Proceeding with Loop v3...]
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Script not found | Loop v3 not installed | Run `/sync project` |
+| Parse error | Invalid arguments | Check command format |
+| Loop already active | Previous loop running | Run `/loop-cancel` first |
+
+**Fallback**: If v3 script unavailable, work directly without loop framework.
+
 ## See Also
 
 - `/loop` - Main unified command

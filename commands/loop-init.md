@@ -104,3 +104,14 @@ Per Anthropic's research:
 - Structured data enables programmatic status checks
 - `passes: true/false` is unambiguous
 - Easier to parse in hooks and scripts
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Dirty git state | Uncommitted changes | Commit or stash first |
+| Task too vague | Can't generate features | Ask for more detail |
+| Directory exists | Previous loop artifacts | Use `--force` to overwrite |
+| Health check fails | Missing dependencies | Install requirements first |
+
+**Fallback**: If feature decomposition fails, create single-feature file for manual breakdown.

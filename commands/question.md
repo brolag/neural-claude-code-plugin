@@ -8,6 +8,14 @@ argument-hint: <your question>
 
 Answer any question with the best available method.
 
+## Usage
+
+```bash
+/question <your question>        # Ask any question
+/question where is auth logic?   # Project/codebase question
+/question what's new in React?   # Current events question
+```
+
 ## Arguments
 `$ARGUMENTS` - Your question
 
@@ -83,6 +91,31 @@ If found, use Agent Expert pattern (read expertise first, validate, then answer)
 /question explain dependency injection
 → Direct knowledge answer
 ```
+
+## Output Format
+
+```markdown
+## Answer
+
+[Direct, concise answer to the question]
+
+### Details
+[Supporting information, code snippets, or explanations]
+
+### Sources
+- [file:line] or [URL] or [expertise file]
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| No results found | Question too vague | Rephrase with specific terms |
+| Expertise file missing | Project not set up | Run `/setup` first |
+| Web search fails | Network/API issue | Fall back to knowledge base |
+| Outdated info | Knowledge cutoff | Use WebSearch for current info |
+
+**Fallback**: If search fails, answer from knowledge base with uncertainty noted.
 
 ## Quality Standards
 

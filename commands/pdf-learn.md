@@ -209,6 +209,18 @@ for i in range(min(30, len(doc))):
 - Read (for validation)
 - Write (for saving notes)
 
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| File not found | Wrong path | Verify file exists |
+| Not a valid PDF | Corrupt or wrong format | Check file integrity |
+| PyMuPDF install fails | pip issues | Install manually: `pip3 install pymupdf` |
+| PDF too large | >50MB file | Use --pages to extract sections |
+| No text extracted | Scanned/image PDF | OCR not supported, use different tool |
+
+**Fallback**: If extraction fails, try reading first 10 pages only.
+
 ## Notes
 
 - Auto-installs PyMuPDF if not present

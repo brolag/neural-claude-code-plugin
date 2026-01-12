@@ -72,6 +72,37 @@ Every cleanup:
 - Improves maintainability
 - Sets better patterns for AI to follow
 
+## Output Format
+
+```markdown
+## Entropy Loop Progress
+
+**Focus**: [unused|dead|patterns|all]
+**Iteration**: [n] of [max]
+
+### Cleaned This Session
+| Type | Location | Description |
+|------|----------|-------------|
+| unused | src/utils.ts:15 | Removed unused export |
+
+### Remaining Issues
+- [type] - [file:line] - [description]
+
+### Status
+[RUNNING | COMPLETE | MAX_ITERATIONS]
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Tests fail after fix | Removal broke something | Revert and skip that item |
+| Can't detect dead code | Complex dependencies | Try different analyzer |
+| False positive | Code used dynamically | Add to ignore list |
+| No issues found | Codebase is clean | Nothing to do |
+
+**Fallback**: If automated detection fails, use manual grep for common patterns.
+
 ## Related
 
 - `/loop-start` - General purpose loop

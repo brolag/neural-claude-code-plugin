@@ -59,6 +59,37 @@ Based on Ralph Wiggum's "Test Coverage Loop" pattern.
 3. **Skip internal/private** - Focus on user-facing code
 4. **Set realistic targets** - 100% is often not worth the effort
 
+## Output Format
+
+```markdown
+## Coverage Loop Progress
+
+**Target**: [n]%
+**Current**: [n]%
+**Iteration**: [n] of [max]
+
+### Tests Added This Session
+| File | Coverage Before | After | Delta |
+|------|-----------------|-------|-------|
+
+### Remaining Uncovered
+- [file:line] - [description]
+
+### Status
+[RUNNING | COMPLETE | MAX_ITERATIONS]
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| No coverage tool | Jest/pytest not configured | Set up coverage first |
+| Tests failing | New tests have bugs | Fix tests before continuing |
+| Target unreachable | Code is untestable | Lower target or refactor code |
+| Parse error | Coverage format unknown | Check tool compatibility |
+
+**Fallback**: If coverage parsing fails, count test files as proxy.
+
 ## Related
 
 - `/loop-start` - General purpose loop

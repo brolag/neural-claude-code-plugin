@@ -46,6 +46,35 @@ Create a new todo workflow based on `templates/todo-workflow.md`:
    /loop-start "Follow todo.md step by step" --max 20 --promise "TASK_COMPLETE"
    ```
 
+## Output Format
+
+```markdown
+## Todo Created
+
+**Task**: [name]
+**File**: todo.md
+**Phases**: 3
+**Total Tasks**: [n]
+
+### Summary
+- Phase 1 (Setup): [n] tasks
+- Phase 2 (Core): [n] tasks
+- Phase 3 (Polish): [n] tasks
+
+### Next Step
+Run: `/loop-start "Follow todo.md" --max 20 --promise "TASK_COMPLETE"`
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| todo.md exists | Previous todo | Use `--force` to overwrite |
+| Template not found | Missing template | Generate from scratch |
+| Task too vague | Can't generate phases | Ask for more specifics |
+
+**Fallback**: If template missing, generate basic structure directly.
+
 ## Tips
 
 - Each task should be atomic and completable in one iteration

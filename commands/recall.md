@@ -8,6 +8,15 @@ argument-hint: <topic or keyword>
 
 Search learnings, facts, and knowledge from the memory system.
 
+## Usage
+
+```bash
+/recall <topic>                  # Search by topic
+/recall ai agents                # Search by domain + keyword
+/recall recent                   # Show recent learnings
+/recall --refresh                # Rebuild index first
+```
+
 ## Arguments
 `$ARGUMENTS` - Topic, keyword, or domain to search for
 
@@ -105,6 +114,35 @@ If learnings seem stale:
 ```bash
 bash .claude/scripts/index-learnings.sh
 ```
+
+## Output Format
+
+```markdown
+## Recalled: [Topic]
+
+### From: [Source Title]
+*Source: inbox/[filename].md | Indexed: [date]*
+
+[Relevant content excerpt]
+
+### Key Points
+- Point 1
+- Point 2
+
+### Related Learnings
+- [Other matching titles]
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| No index found | Index not created | Run `/recall --refresh` |
+| No matches | Topic not in memory | Try broader terms or `/remember` first |
+| Stale results | Index out of date | Run `bash .claude/scripts/index-learnings.sh` |
+| Empty inbox | No learnings captured | Use `/yt-learn`, `/learn`, or `/remember` |
+
+**Fallback**: If index missing, search inbox/*.md files directly.
 
 ## Quality Standards
 

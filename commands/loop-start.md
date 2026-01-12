@@ -146,3 +146,34 @@ This runs Claude Code inside a Docker container for safety.
 - `/loop-coverage` - Specialized coverage loop
 - `/loop-lint` - Specialized linting loop
 - `/loop-entropy` - Specialized entropy cleanup loop
+
+## Output Format
+
+```markdown
+## Neural Loop Started
+
+**Task**: [description]
+**Type**: [feature|coverage|lint|entropy]
+**Max Iterations**: [n]
+**Promise**: [completion phrase]
+**Sandbox**: [enabled|disabled]
+
+### Initial State
+- Features loaded: [n] (if using features.json)
+- Tests status: [passing|failing|none]
+- Git status: [clean|dirty]
+
+### Progress
+Iteration 1: Starting...
+```
+
+## Error Handling
+
+| Error | Cause | Resolution |
+|-------|-------|------------|
+| Script not found | Plugin not synced | Run `/sync project` |
+| features.json missing | Not initialized | Run `/loop-init` first or use `--init` |
+| Docker not found | Sandbox mode without Docker | Install Docker or disable sandbox |
+| Task too vague | No clear completion criteria | Add specific success criteria |
+
+**Fallback**: If start script fails, work directly with manual iteration tracking.
