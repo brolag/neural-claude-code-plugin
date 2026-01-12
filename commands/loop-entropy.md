@@ -1,3 +1,8 @@
+---
+description: Loop Entropy - Fight code entropy iteratively
+allowed-tools: Bash, Read, Write
+---
+
 # Loop Entropy
 
 Specialized Neural Loop for fighting code entropy.

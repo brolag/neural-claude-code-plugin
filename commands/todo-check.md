@@ -1,3 +1,8 @@
+---
+description: Todo Check - Report progress on current todo.md
+allowed-tools: Read
+---
+
 # Check Todo Progress
 
 Check the current status of todo.md and report progress.

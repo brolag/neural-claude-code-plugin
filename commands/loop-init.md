@@ -1,3 +1,8 @@
+---
+description: Loop Init - Create features.json and progress.txt for loops
+allowed-tools: Read, Write, Glob, Bash
+---
+
 # Initialize Neural Loop
 
 Create artifacts (features.json, progress.txt) before starting a Neural Loop.

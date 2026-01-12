@@ -1,3 +1,8 @@
+---
+description: Loop Status - Check current autonomous loop state
+allowed-tools: Bash, Read
+---
+
 # Neural Loop Status
 
 Check the status of the current Neural Loop.

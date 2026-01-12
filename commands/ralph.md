@@ -1,3 +1,8 @@
+---
+description: Ralph - Alias for Loop v3 (backward compatibility)
+allowed-tools: Bash, Read, Write
+---
+
 # Ralph - Alias for Loop v3
 
 Backward compatibility alias for the unified Loop system. Based on Matt Pocock's Ralph Wiggum pattern.

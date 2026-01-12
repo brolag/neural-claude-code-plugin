@@ -1,3 +1,8 @@
+---
+description: Loop Lint - Fix linting errors iteratively
+allowed-tools: Bash, Read, Write
+---
+
 # Loop Lint
 
 Specialized Neural Loop for fixing linting errors.

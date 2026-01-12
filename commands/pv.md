@@ -1,3 +1,8 @@
+---
+description: Parallel Verification - AlphaGo-style multi-path reasoning
+allowed-tools: Task, Read, Glob, Grep
+---
+
 # Parallel Verification Command
 
 Invoke: `/pv <problem>`

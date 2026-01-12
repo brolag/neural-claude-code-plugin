@@ -1,3 +1,8 @@
+---
+description: GitHub Repository Learning - Analyze repos and extract patterns
+allowed-tools: Bash, WebFetch, Read, Write
+---
+
 # /gh-learn - GitHub Repository Learning
 
 Learn from GitHub repositories by analyzing their architecture, extracting patterns, and adopting capabilities.

@@ -1,3 +1,9 @@
+---
+name: plan-execute
+description: Opus plans + Gemini executes for cost-optimized task orchestration
+trigger: /plan-execute
+---
+
 # Plan-Execute Skill
 
 Orchestrates complex tasks using Opus for planning and Gemini for execution.

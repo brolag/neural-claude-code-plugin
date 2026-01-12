@@ -1,3 +1,9 @@
+---
+name: changelog-architect
+description: Changelog Architect - Analyze Claude Code changelog for synergies
+trigger: /changelog-architect, "analyze changelog", "what's new in claude code"
+---
+
 # Changelog Architect
 
 Analyze Claude Code changelog to discover feature synergies and unlock hidden value through first-principles architectural thinking.

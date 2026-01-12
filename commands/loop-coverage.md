@@ -1,3 +1,8 @@
+---
+description: Loop Coverage - Improve test coverage iteratively
+allowed-tools: Bash, Read, Write
+---
+
 # Loop Coverage
 
 Specialized Neural Loop for improving test coverage.

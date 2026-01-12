@@ -1,3 +1,8 @@
+---
+description: Plan-Execute - Opus plans, Gemini executes for cost savings
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep
+---
+
 # /plan-execute Command
 
 Orchestrate complex tasks with Opus planning and Gemini execution.

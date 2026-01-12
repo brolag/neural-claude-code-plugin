@@ -1,3 +1,8 @@
+---
+description: Cancel Loop - Stop an active autonomous loop
+allowed-tools: Bash
+---
+
 # Cancel Neural Loop
 
 Stop an active Neural Loop iteration.

@@ -1,3 +1,9 @@
+---
+name: parallel-verification
+description: AlphaGo-style parallel hypothesis exploration and verification
+trigger: /pv, "parallel verify", "explore hypotheses", "multi-path reasoning"
+---
+
 # Parallel Verification Skill
 
 Implements AlphaGo-style parallel hypothesis exploration and verification.

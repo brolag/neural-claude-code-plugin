@@ -1,3 +1,8 @@
+---
+description: Todo New - Create structured todo.md for loops
+allowed-tools: Read, Write
+---
+
 # Create Todo Workflow
 
 Generate a structured todo.md for a long-running task, optimized for neural-loop.

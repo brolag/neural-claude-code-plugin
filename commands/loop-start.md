@@ -1,3 +1,8 @@
+---
+description: Start Neural Loop - Autonomous iteration until completion
+allowed-tools: Bash, Read, Write
+---
+
 # Start Neural Loop
 
 Start an autonomous iteration loop that continues until completion or max iterations.

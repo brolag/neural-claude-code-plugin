@@ -1,3 +1,9 @@
+---
+name: prompt-engineering
+description: Review, improve, and validate AI prompts using CRISP-E framework
+trigger: /prompt-review, /prompt-improve, /prompt-validate
+---
+
 # Prompt Engineering Skill
 
 Tools for reviewing, improving, and validating AI prompts.

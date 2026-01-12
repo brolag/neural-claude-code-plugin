@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.0.1] - 2026-01-11
+
+### Fixed
+
+#### YAML Frontmatter for All Prompts
+Added proper YAML frontmatter to all commands and skills for linter compliance:
+
+**Commands (19 files)**:
+- `gh-learn.md`, `loop-cancel.md`, `loop-coverage.md`, `loop-entropy.md`
+- `loop-init.md`, `loop-lint.md`, `loop-plan.md`, `loop-start.md`
+- `loop-status.md`, `loop.md`, `pdf-learn.md`, `plan-execute.md`
+- `pv.md`, `ralph.md`, `route.md`, `todo-check.md`, `todo-new.md`
+- `yt-learn.md`, `changelog-architect.md`
+
+**Skills (4 files)**:
+- `changelog-architect/skill.md`
+- `parallel-verification/skill.md`
+- `plan-execute/skill.md`
+- `prompt-engineering/skill.md`
+
+All prompts now include:
+- `description:` field for commands
+- `name:`, `description:`, `trigger:` fields for skills
+- `allowed-tools:` where applicable
+
+**Linter Results**: 0 failed, 100% pass rate
+
+---
+
 ## [3.0.0] - 2026-01-09
 
 ### Loop v3 - Unified Autonomous Coding Loop

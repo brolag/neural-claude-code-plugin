@@ -1,3 +1,8 @@
+---
+description: Loop Plan - Safe Autonomous Task Execution
+allowed-tools: Read, Write, Glob, Grep, Bash
+---
+
 # Loop Plan - Safe Autonomous Task Execution
 
 Plan a task thoroughly, then execute it autonomously with proper safety harnesses.

@@ -1,3 +1,8 @@
+---
+description: YouTube Learning - Transform videos into actionable knowledge
+allowed-tools: Bash, WebFetch, Read, Write
+---
+
 # YouTube Learning
 
 Transform YouTube videos into actionable knowledge.

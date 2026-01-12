@@ -1,3 +1,8 @@
+---
+description: Loop - Unified Autonomous Coding Loop (v3)
+allowed-tools: Bash, Read, Write, Glob
+---
+
 # Loop - Unified Autonomous Coding Loop
 
 **Version 3.0** - Merges Ralph Wiggum + Neural Loop into one system.

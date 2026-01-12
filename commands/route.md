@@ -1,3 +1,8 @@
+---
+description: Smart Task Router - Optimize AI routing for cost/quality
+allowed-tools: Bash, Read, Write
+---
+
 # Smart Task Router
 
 Analyze tasks and recommend the optimal AI model for cost/quality optimization.

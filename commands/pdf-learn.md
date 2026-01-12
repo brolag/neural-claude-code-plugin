@@ -1,3 +1,8 @@
+---
+description: PDF Content Learning - Extract knowledge from PDF documents
+allowed-tools: Bash, Read, Write
+---
+
 # /pdf-learn - PDF Content Learning
 
 Transform PDF documents into actionable knowledge with automatic text extraction.

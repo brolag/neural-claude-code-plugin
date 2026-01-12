@@ -1,3 +1,8 @@
+---
+description: Changelog Architect - Analyze Claude Code changelog for synergies
+allowed-tools: WebFetch, Read, Write
+---
+
 # /changelog-architect
 
 Changelog Architect Analysis
