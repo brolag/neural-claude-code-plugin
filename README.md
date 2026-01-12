@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-3.0.0-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-3.1.0-ec4899?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -144,6 +144,34 @@ Read-only QA agent. Quick, Deep, Security, and PR review types.
 
 ### 🎯 Loop Types
 Coverage, lint, entropy loops. Plus Codex CLI auto-detection.
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🔀 Research Swarm
+Parallel forked research agents with `/research-swarm`. True cognitive isolation.
+
+</td>
+<td width="50%">
+
+### ⚡ PV-Mesh
+Parallel Multi-AI verification: Claude+Codex+Gemini in 15-20s vs 45-60s serial.
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🌐 Teleport Memory Bridge
+Sync memory between local CLI and cloud with `/teleport-sync`.
+
+</td>
+<td width="50%">
+
+### 🧠 Self-Improving Agent Mesh
+One agent learns → all agents learn via expertise streaming.
 
 </td>
 </tr>
@@ -584,8 +612,18 @@ Run tasks autonomously for hours using the Ralph Wiggum pattern.
 |---------|-------------|
 | `/ai-collab <problem>` | Get all AI perspectives |
 | `/plan-execute <task>` | Opus plans + Gemini executes (60% cheaper) |
+| `/pv-mesh <problem>` | Parallel Multi-AI verification (3x faster than ai-collab) |
 | `Ask Codex to...` | Route to Codex |
 | `Ask Gemini to...` | Route to Gemini |
+
+### Research & Knowledge
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `/research-swarm <topic>` | Parallel forked research agents | `/research-swarm "React 19 vs Vue 4"` |
+| `/teleport-sync export` | Pack memory for cloud session | `/teleport-sync export` |
+| `/teleport-sync import` | Import memory from cloud | `/teleport-sync import "{...}"` |
+| `/teleport-sync status` | Check sync state | `/teleport-sync status` |
 
 ---
 
@@ -605,11 +643,17 @@ your-project/
 │   │   ├── session_logs/       # Session history
 │   │   └── pattern-index.json  # Detected patterns
 │   │
+│   ├── config/                 # ⚙️ Configuration files
+│   │   └── bash-permissions.yaml  # Wildcard bash approvals
+│   │
 │   ├── agents/                 # 🤖 Custom agents
 │   ├── skills/                 # ⚡ Reusable skills
 │   ├── commands/               # 📝 Slash commands
 │   ├── scripts/                # 🔧 Hooks & utilities
-│   │   └── neural-loop/        # 🔄 Autonomous iteration
+│   │   ├── neural-loop/        # 🔄 Autonomous iteration
+│   │   ├── expertise-watcher.sh   # Agent mesh broadcaster
+│   │   ├── expertise-streamer.sh  # Real-time streaming
+│   │   └── deep-research-hook.sh  # 10-min research hook
 │   ├── templates/              # 📋 Workflow templates
 │   │
 │   ├── settings.json           # Project settings

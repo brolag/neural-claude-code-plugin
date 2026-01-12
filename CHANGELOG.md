@@ -7,6 +7,97 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.1.0] - 2026-01-12
+
+### Claude Code v2.1.x Integration - Hidden Patterns Release
+
+Major feature release implementing 10 breakthrough patterns discovered by synthesizing Claude Code v2.1.x features with Neural Claude Code architecture.
+
+### Added
+
+#### Research Swarm (`/research-swarm`)
+Parallel forked research agents using `context: fork` for true cognitive isolation.
+- Launch 3-5 parallel research agents simultaneously
+- Each agent explores independently without context contamination
+- Synthesize findings into comprehensive report
+- Best for: broad research, competitive analysis, multi-angle exploration
+
+#### Parallel Multi-AI Verification Mesh (`/pv-mesh`)
+Combines AlphaGo-style parallel verification with true AI diversity.
+- Run Claude, Codex, and Gemini in parallel forks (single message, 3 Task calls)
+- Each AI uses its unique strengths (Claude: accuracy, Codex: terminal, Gemini: algorithms)
+- 3x faster than sequential `/ai-collab` (15-20s vs 45-60s)
+- Best for: architecture decisions, complex debugging, security reviews
+
+#### Teleport Memory Bridge (`/teleport-sync`)
+Synchronize memory state between local CLI and cloud (claude.ai) sessions.
+- `export` - Pack memory into portable JSON blob for clipboard
+- `import` - Unpack memory blob back to local files
+- `status` - Check sync state
+- Best for: hybrid execution (local work → cloud web access → return with results)
+
+#### Expertise Watcher Script (`scripts/expertise-watcher.sh`)
+Self-improving agent mesh infrastructure using fswatch.
+- Watches `.claude/expertise/*.yaml` for changes
+- Broadcasts updates to all active agents via systemMessage injection
+- Queues changes for next session consumption
+- Usage: `./expertise-watcher.sh start|stop|status|consume`
+
+#### Expertise Streamer Script (`scripts/expertise-streamer.sh`)
+Real-time expertise streaming during active sessions.
+- Injects updates IMMEDIATELY into running session (vs. queuing)
+- Manual injection support: `./expertise-streamer.sh inject "message"`
+- Usage: `./expertise-streamer.sh start|stop|status|inject|consume`
+
+#### Deep Research Hook (`scripts/deep-research-hook.sh`)
+10-minute timeout research hook for deep web scraping.
+- Runs AFTER neural loop iterations
+- Full article scraping (not just snippets)
+- Cross-references multiple sources
+- Queue format: `TOPIC|URL1,URL2,URL3`
+- Results output to `.claude/loop/research-results.md`
+
+#### Wildcard Bash Permissions (`config/bash-permissions.yaml`)
+Auto-approve safe command patterns for truly autonomous loops.
+- Testing: pytest, npm test, vitest, jest
+- Linting: eslint, prettier (check only)
+- Git (read-only): status, diff, log, branch, show
+- Claude scripts: `.claude/scripts/*.sh` (with exclusions for destructive commands)
+- Context-specific: extra approvals during neural-loop, tdd modes
+- Deny patterns: rm -rf, force push, sudo, DROP DATABASE, etc.
+
+### Changed
+
+#### Session Start Script Enhancements
+- **Layered Background Loading**: Load expertise, memory, and inbox items in background for faster startup
+- **Agent Mesh Integration**: Consumes broadcast queue from expertise-watcher
+- **Clickable Memory Navigation**: OSC 8 hyperlinks for inbox items and facts (clickable in terminal)
+
+### Technical Details
+
+These patterns leverage Claude Code v2.1.x features:
+- `context: fork` - Isolated sub-agent contexts
+- 10-minute hook timeouts (600s) - Deep research capability
+- Wildcard bash permissions - Autonomous loop enablement
+- OSC 8 hyperlinks - Terminal file navigation
+- Unified Ctrl+B backgrounding - Background task management
+- Skill hot-reload from ~/.claude/skills
+
+### Best Practices
+
+**When to use each pattern:**
+
+| Pattern | Use When |
+|---------|----------|
+| `/research-swarm` | Need broad coverage of a topic |
+| `/pv-mesh` | Need fast multi-AI consensus |
+| `/teleport-sync` | Moving between local and cloud Claude |
+| Expertise Watcher | Setting up persistent learning |
+| Deep Research Hook | Running extended research loops |
+| Bash Permissions | Enabling autonomous loops |
+
+---
+
 ## [3.0.2] - 2026-01-11
 
 ### Fixed
