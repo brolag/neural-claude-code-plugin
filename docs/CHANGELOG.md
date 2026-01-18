@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.1.1] - 2026-01-18
+
+### Content & Quality Skills
+
+Added new skills for content creation pipelines and writing quality.
+
+### Added
+
+#### Newsletter Launch Skill (`/newsletter`)
+Complete content pack generation from research or topic.
+- 7-phase pipeline: Research → Newsletter → Thread → Carousel → Post → Video → Quality Gate
+- Generates 5 content types in one command
+- Integrated stop-slop quality check
+- Multi-language support (es/en)
+
+#### Stop-Slop Skill
+Writing quality framework to remove AI patterns from prose.
+- 40+ banned phrases detection
+- Sentence rhythm analysis
+- 50-point scoring system
+- Integrated into content creation
+
+#### Browser Usage Prompt Guide
+Guide for creating browser automation prompts.
+- Element selection strategies
+- Error handling patterns
+- Best practices for Claude Chrome extension
+
+---
+
 ## [3.1.0] - 2026-01-12
 
 ### Claude Code v2.1.x Integration - Hidden Patterns Release

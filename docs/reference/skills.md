@@ -22,6 +22,7 @@ Built-in reusable skills.
 | `deep-research` | Research queries | Multi-source investigation |
 | `content-creation` | Content requests | Create from knowledge |
 | `knowledge-management` | Knowledge queries | Capture and connect notes |
+| `newsletter-launch` | `/newsletter` | Full content pack from research |
 
 ---
 
@@ -59,6 +60,15 @@ Built-in reusable skills.
 | Skill | Trigger | Description |
 |-------|---------|-------------|
 | `prompt-engineering` | `/prompt-*` | CRISP-E framework |
+| `browser-usage-prompt-guide` | Browser automation | Guide for browser prompts |
+
+---
+
+## Writing Quality Skills
+
+| Skill | Trigger | Description |
+|-------|---------|-------------|
+| `stop-slop` | Text editing | Remove AI writing patterns |
 
 ---
 
