@@ -554,11 +554,89 @@
             z-index: 100;
         }
 
+        /* Terminal Input */
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            border-top: 1px solid var(--terminal-border);
+            background: rgba(0, 30, 0, 0.3);
+        }
+
+        .terminal-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--matrix-green);
+            font-family: inherit;
+            font-size: 0.85rem;
+            margin-left: 0.5rem;
+            outline: none;
+            caret-color: var(--matrix-green);
+        }
+
+        .terminal-input::placeholder {
+            color: #004400;
+        }
+
+        .terminal-body {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .terminal-body::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .terminal-body::-webkit-scrollbar-thumb {
+            background: var(--terminal-border);
+        }
+
+        /* Easter egg effects */
+        .glitch {
+            animation: glitch 0.3s infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        .rainbow {
+            animation: rainbow 0.5s infinite;
+        }
+
+        @keyframes rainbow {
+            0% { color: #ff0000; }
+            17% { color: #ff8000; }
+            33% { color: #ffff00; }
+            50% { color: #00ff00; }
+            67% { color: #0080ff; }
+            83% { color: #8000ff; }
+            100% { color: #ff0000; }
+        }
+
+        .typing-effect {
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 1s steps(40);
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .nav-links { display: none; }
             h1 { font-size: 1.8rem; }
             .terminal-body { font-size: 0.75rem; }
+            .terminal-input { font-size: 0.75rem; }
         }
 
         /* Scrollbar */
@@ -616,14 +694,14 @@
             <a href="#install" class="btn">QUICK_START</a>
         </div>
 
-        <div class="terminal">
+        <div class="terminal" id="interactive-terminal">
             <div class="terminal-header">
                 <span class="terminal-dot red"></span>
                 <span class="terminal-dot yellow"></span>
                 <span class="terminal-dot green"></span>
-                <span class="terminal-title">neural_claude_code v4.0.0</span>
+                <span class="terminal-title">neural_claude_code v4.0.0 — click to interact</span>
             </div>
-            <div class="terminal-body">
+            <div class="terminal-body" id="terminal-output">
                 <div class="terminal-line">
                     <span class="prompt">$</span> <span class="command">claude</span>
                 </div>
@@ -643,8 +721,12 @@
                     <span class="dim">---</span>
                 </div>
                 <div class="terminal-line">
-                    <span class="prompt">></span> <span class="command">What shall we build today?</span><span class="cursor"></span>
+                    <span class="output">Type </span><span class="success">help</span><span class="output"> for commands_</span>
                 </div>
+            </div>
+            <div class="terminal-input-line">
+                <span class="prompt">></span>
+                <input type="text" id="terminal-input" class="terminal-input" autocomplete="off" spellcheck="false" placeholder="type a command...">
             </div>
         </div>
     </section>
@@ -817,7 +899,7 @@
             }
         }
 
-        setInterval(drawMatrix, 50);
+        // Matrix interval set later in interactive terminal code
 
         // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -843,6 +925,258 @@
                 }, 2000);
             });
         }
+
+        // Interactive Terminal
+        const terminalInput = document.getElementById('terminal-input');
+        const terminalOutput = document.getElementById('terminal-output');
+        const terminal = document.getElementById('interactive-terminal');
+        let commandHistory = [];
+        let historyIndex = -1;
+        let matrixSpeed = 50;
+        let hackedMode = false;
+
+        terminal.addEventListener('click', () => terminalInput.focus());
+
+        terminalInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const cmd = terminalInput.value.trim().toLowerCase();
+                if (cmd) {
+                    commandHistory.push(cmd);
+                    historyIndex = commandHistory.length;
+                    processCommand(cmd);
+                    terminalInput.value = '';
+                }
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    terminalInput.value = commandHistory[historyIndex];
+                }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    terminalInput.value = commandHistory[historyIndex];
+                } else {
+                    historyIndex = commandHistory.length;
+                    terminalInput.value = '';
+                }
+            }
+        });
+
+        function addLine(content, type = 'output') {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.style.opacity = '1';
+            line.innerHTML = `<span class="${type}">${content}</span>`;
+            terminalOutput.appendChild(line);
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
+        }
+
+        function addPromptLine(cmd) {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.style.opacity = '1';
+            line.innerHTML = `<span class="prompt">></span> <span class="command">${cmd}</span>`;
+            terminalOutput.appendChild(line);
+        }
+
+        const commands = {
+            help: () => {
+                addLine('Available commands:', 'success');
+                addLine('  help     - Show this menu');
+                addLine('  about    - About Neural Claude Code');
+                addLine('  skills   - List available skills');
+                addLine('  agents   - List available agents');
+                addLine('  matrix   - Toggle matrix intensity');
+                addLine('  hack     - ???');
+                addLine('  sudo     - Try it...');
+                addLine('  clear    - Clear terminal');
+                addLine('  whoami   - Who are you?');
+                addLine('  coffee   - Essential fuel');
+                addLine('  exit     - Nice try');
+                addLine('  repo     - Open GitHub repo');
+            },
+
+            about: () => {
+                addLine('[NEURAL CLAUDE CODE]', 'success');
+                addLine('Self-improving AI that learns from you.');
+                addLine('Built with Claude Code.');
+                addLine('');
+                addLine('> github.com/brolag/neural-claude-code-plugin');
+            },
+
+            skills: () => {
+                addLine('[SKILLS: 19 loaded]', 'success');
+                const skills = ['memory-system', 'deep-research', 'tdd', 'debugging', 'parallel-verification', 'content-creation', 'pattern-detector', 'worktree-manager', '...'];
+                skills.forEach(s => addLine(`  > ${s}`));
+            },
+
+            agents: () => {
+                addLine('[AGENTS: 7 active]', 'success');
+                const agents = ['codex', 'gemini', 'multi-ai', 'dispatcher', 'cognitive-amplifier', 'optimizer', 'code-reviewer'];
+                agents.forEach(a => addLine(`  > ${a}`));
+            },
+
+            matrix: () => {
+                matrixSpeed = matrixSpeed === 50 ? 20 : 50;
+                clearInterval(window.matrixInterval);
+                window.matrixInterval = setInterval(drawMatrix, matrixSpeed);
+                document.getElementById('matrix-bg').style.opacity = matrixSpeed === 20 ? '0.4' : '0.15';
+                addLine(matrixSpeed === 20 ? '[MATRIX OVERDRIVE ENGAGED]' : '[MATRIX NORMALIZED]', 'success');
+            },
+
+            hack: () => {
+                hackedMode = !hackedMode;
+                if (hackedMode) {
+                    document.body.classList.add('glitch');
+                    addLine('[ACCESSING MAINFRAME...]', 'success');
+                    setTimeout(() => addLine('> Bypassing firewall...'), 300);
+                    setTimeout(() => addLine('> Decrypting protocols...'), 600);
+                    setTimeout(() => addLine('> Downloading Gibson...'), 900);
+                    setTimeout(() => {
+                        addLine('[ACCESS GRANTED]', 'success');
+                        addLine('Just kidding. This is a landing page.');
+                        document.body.classList.remove('glitch');
+                    }, 1500);
+                }
+            },
+
+            sudo: () => {
+                addLine('[PERMISSION DENIED]', 'dim');
+                addLine('Nice try. You are not in the sudoers file.');
+                addLine('This incident will be reported.');
+            },
+
+            clear: () => {
+                terminalOutput.innerHTML = '';
+                addLine('[TERMINAL CLEARED]', 'success');
+            },
+
+            whoami: () => {
+                addLine('[IDENTITY CHECK]', 'success');
+                addLine('You are a developer.');
+                addLine('You seek better tools.');
+                addLine('You found one.');
+                addLine('');
+                addLine('> Clone the repo. Join the evolution.');
+            },
+
+            coffee: () => {
+                addLine('', 'output');
+                addLine('    ( (', 'success');
+                addLine('     ) )', 'success');
+                addLine('  ........', 'output');
+                addLine('  |      |]', 'output');
+                addLine('  \\      /', 'output');
+                addLine('   `----\'', 'output');
+                addLine('');
+                addLine('[CAFFEINE LOADED]', 'success');
+            },
+
+            exit: () => {
+                addLine('[ERROR]', 'dim');
+                addLine('There is no escape from the Matrix.');
+                addLine('');
+                addLine('(Try "repo" instead)');
+            },
+
+            repo: () => {
+                addLine('[OPENING GITHUB...]', 'success');
+                setTimeout(() => {
+                    window.open('https://github.com/brolag/neural-claude-code-plugin', '_blank');
+                }, 500);
+            },
+
+            hello: () => {
+                addLine('Hello, human.', 'success');
+                addLine('Ready to build something?');
+            },
+
+            hi: () => commands.hello(),
+
+            ls: () => {
+                addLine('agents/  commands/  skills/  scripts/  README.md', 'output');
+            },
+
+            pwd: () => {
+                addLine('/neural-claude-code-plugin', 'output');
+            },
+
+            vim: () => {
+                addLine('[ERROR] How do I exit this?!', 'dim');
+            },
+
+            emacs: () => {
+                addLine('[ERROR] Nice OS, but where\'s the text editor?', 'dim');
+            },
+
+            '42': () => {
+                addLine('The answer to life, the universe, and everything.', 'success');
+            },
+
+            ping: () => {
+                addLine('PONG', 'success');
+            },
+
+            date: () => {
+                addLine(new Date().toString(), 'output');
+            },
+
+            uptime: () => {
+                addLine('Neural Claude Code: Always learning, never sleeping.', 'output');
+            }
+        };
+
+        function processCommand(cmd) {
+            addPromptLine(cmd);
+
+            if (commands[cmd]) {
+                commands[cmd]();
+            } else if (cmd.startsWith('echo ')) {
+                addLine(cmd.substring(5), 'output');
+            } else if (cmd.startsWith('cd ')) {
+                addLine(`[ERROR] This is a website, not a filesystem.`, 'dim');
+            } else if (cmd === 'rm -rf /') {
+                addLine('[BLOCKED]', 'dim');
+                addLine('Nice try, chaos agent.');
+            } else {
+                addLine(`Command not found: ${cmd}`, 'dim');
+                addLine('Type "help" for available commands.', 'output');
+            }
+        }
+
+        // Konami Code Easter Egg
+        let konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        let konamiIndex = 0;
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === konamiCode[konamiIndex]) {
+                konamiIndex++;
+                if (konamiIndex === konamiCode.length) {
+                    activateKonami();
+                    konamiIndex = 0;
+                }
+            } else {
+                konamiIndex = 0;
+            }
+        });
+
+        function activateKonami() {
+            document.body.classList.add('rainbow');
+            addLine('', 'output');
+            addLine('[KONAMI CODE ACTIVATED]', 'success');
+            addLine('> 30 LIVES GRANTED', 'success');
+            addLine('> INFINITE POWER MODE', 'success');
+            addLine('', 'output');
+
+            setTimeout(() => {
+                document.body.classList.remove('rainbow');
+            }, 3000);
+        }
+
+        // Store matrix interval globally
+        window.matrixInterval = setInterval(drawMatrix, matrixSpeed);
     </script>
 </body>
 </html>
