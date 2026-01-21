@@ -161,6 +161,25 @@
             content: ']';
         }
 
+        .btn-star {
+            border-color: #ffdd00;
+            color: #ffdd00;
+        }
+
+        .btn-star:hover {
+            background: #ffdd00;
+            color: var(--matrix-bg);
+            box-shadow: 0 0 20px rgba(255, 221, 0, 0.4);
+        }
+
+        .btn-star svg {
+            transition: transform 0.3s;
+        }
+
+        .btn-star:hover svg {
+            transform: scale(1.2) rotate(15deg);
+        }
+
         /* Hero Section */
         .hero {
             min-height: 100vh;
@@ -672,7 +691,12 @@
             <li><a href="#install">install</a></li>
             <li><a href="https://github.com/brolag/neural-claude-code-plugin">github</a></li>
         </ul>
-        <a href="https://github.com/brolag/neural-claude-code-plugin" class="btn">CLONE</a>
+        <a href="https://github.com/brolag/neural-claude-code-plugin" class="btn btn-star">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/>
+                </svg>
+                STAR
+            </a>
     </nav>
 
     <section class="hero">
@@ -996,6 +1020,7 @@
                 addLine('  coffee   - Essential fuel');
                 addLine('  exit     - Nice try');
                 addLine('  repo     - Open GitHub repo');
+                addLine('  star     - ★ Star the repo!');
             },
 
             about: () => {
@@ -1086,6 +1111,19 @@
                 setTimeout(() => {
                     window.open('https://github.com/brolag/neural-claude-code-plugin', '_blank');
                 }, 500);
+            },
+
+            star: () => {
+                addLine('&nbsp;', 'output');
+                addLine('&nbsp;&nbsp;&nbsp;&nbsp;★', 'success');
+                addLine('&nbsp;&nbsp;&nbsp;/|\\', 'success');
+                addLine('&nbsp;&nbsp;/_|_\\', 'success');
+                addLine('&nbsp;', 'output');
+                addLine('[THANK YOU] Stars help others discover this project!', 'success');
+                addLine('Opening GitHub...', 'output');
+                setTimeout(() => {
+                    window.open('https://github.com/brolag/neural-claude-code-plugin', '_blank');
+                }, 1000);
             },
 
             hello: () => {
