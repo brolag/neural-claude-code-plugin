@@ -10,6 +10,22 @@ agent: general-purpose
 
 Structured debugging methodology based on obra/superpowers patterns. Replaces ad-hoc guessing with systematic root cause analysis.
 
+## Iron Law
+
+```
+NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST
+```
+
+If you haven't completed Phase 1 (OBSERVE), you cannot propose fixes.
+
+**Violating the letter of this process is violating the spirit of debugging.**
+
+This applies ESPECIALLY when:
+- Under time pressure (emergencies make guessing tempting)
+- "Just one quick fix" seems obvious
+- You've already tried multiple fixes
+- Previous fix didn't work
+
 ## Philosophy
 
 > "Systematic over ad-hoc. Evidence over claims. Verification before completion."
@@ -303,35 +319,39 @@ await waitFor(() => element.isVisible());
 # Each iteration uses debugging skill for failures
 ```
 
+## Related Skills
+
+- `tdd` - Write regression tests after fixing
+- `code-reviewer` - Review fix for quality
+- `test-writer-fixer` - Add comprehensive test coverage
+
 ## Usage
 
 ```bash
-# Debug a specific error
+# Debug a specific error message
 /debug "TypeError: Cannot read property 'email' of undefined"
 
-# Debug test failure
+# Debug an intermittent test failure
 /debug "test 'user login' fails intermittently"
 
-# Debug performance issue
+# Debug a performance regression
 /debug "API response time increased 5x after last deploy"
 
-# Debug with context
-/debug --file src/auth.ts --line 42 "null reference error"
+# Debug a build failure
+/debug "npm run build fails with exit code 1"
+
+# Debug with context about recent changes
+/debug "Authentication broken after merging PR #42"
 ```
 
 ## Error Handling
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
-| Cannot reproduce | Environment difference | Document exact steps, check env vars |
-| Multiple root causes | Complex issue | Address one at a time, re-test |
-| Fix introduces regression | Incomplete testing | Add more test cases before fix |
-| Hypothesis exhausted | All ruled out | Gather more data, consider external factors |
+| Cannot reproduce bug | Environment differences or intermittent issue | Document exact reproduction steps, check environment variables, run multiple times |
+| No stack trace available | Error suppressed or not properly logged | Add strategic logging at entry points, enable verbose mode, check error boundaries |
+| Multiple hypotheses confirmed | Root cause may be compound or cascading | Address hypotheses in dependency order, fix most upstream cause first |
+| Fix introduces new failures | Incomplete understanding of code dependencies | Revert fix, expand observation phase, map all callers of modified code |
+| Debug output too verbose | Excessive logging obscuring actual issue | Use targeted logging with [DEBUG] prefixes, remove logs after each hypothesis test |
 
-**Fallback**: If systematic debugging fails after 3 hypotheses, escalate to `/ai-collab` for multi-perspective analysis.
-
-## Related Skills
-
-- `tdd` - Write regression tests after fixing
-- `code-reviewer` - Review fix for quality
-- `test-writer-fixer` - Add comprehensive test coverage
+**Fallback**: If systematic debugging fails to identify root cause, use `git bisect` to find the exact commit that introduced the bug, or escalate to code review with full observation report.

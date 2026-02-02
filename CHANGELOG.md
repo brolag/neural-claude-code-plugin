@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.4.0] - 2026-02-01
+
+### Added
+- **react-best-practices** skill - React/Next.js optimization with 40+ rules and 6 reference guides (Vercel Engineering)
+- **knowledge-management** skill - PARA-based second brain system for capturing and organizing knowledge
+- **slop-scan** skill - Detect technical debt, code smells, and slop accumulation across codebase
+- **slop-fix** skill - Auto-fix safe slop issues (unused imports, dead code, simple refactors)
+- **overseer** skill - Review PRs/diffs for quality, security, and consistency before merge
+
+### Changed
+- Updated **debugging** skill with improved error handling and root cause analysis workflow
+- Updated **tdd** skill with better task decomposition and RED-GREEN-REFACTOR enforcement
+- Updated **deep-research** skill with auto-recall from knowledge base and systematic analysis
+
+### Metadata
+- Bumped version to 1.4.0
+- Added keywords: react, nextjs, knowledge-management, slop, code-quality, anti-slop
+
+---
+
 ## [4.0.0] - 2026-01-20
 
 ### Major Cleanup Release - Anti-Bloat Consolidation

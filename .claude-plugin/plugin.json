@@ -1,6 +1,6 @@
 {
   "name": "neural-claude-code",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Self-improving agentic system with learnings memory, output styles, TTS, meta-agents, and multi-AI collaboration for Claude Code",
   "author": {
     "name": "Alfredo Bonilla",
@@ -25,7 +25,13 @@
     "tts",
     "elevenlabs",
     "learnings",
-    "memory-system"
+    "memory-system",
+    "react",
+    "nextjs",
+    "knowledge-management",
+    "slop",
+    "code-quality",
+    "anti-slop"
   ],
   "commands": "./commands/",
   "agents": "./agents/"

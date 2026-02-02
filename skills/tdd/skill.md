@@ -10,9 +10,25 @@ agent: general-purpose
 
 Enforces strict RED-GREEN-REFACTOR cycle based on obra/superpowers patterns.
 
+## Iron Law
+
+```
+NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST
+```
+
+Write code before the test? **Delete it. Start over.**
+
+No exceptions:
+- Don't keep it as "reference"
+- Don't "adapt" it while writing tests
+- Don't look at it
+- Delete means **delete**
+
+**Violating the letter of this rule is violating the spirit of TDD.**
+
 ## Philosophy
 
-> "Delete code written before tests."
+> "If you didn't watch the test fail, you don't know if it tests the right thing."
 
 Tests ALWAYS come first. Code written before tests is suspect and should be rewritten test-first.
 
@@ -214,36 +230,39 @@ TDD sessions produce:
 - Implementation files with minimal, tested code
 - Commit history showing RED-GREEN-REFACTOR cycle
 
+## Related Skills
+
+- `code-reviewer` - Reviews test coverage
+- `test-writer-fixer` - Focuses on test maintenance
+- `debugging` - Systematic issue resolution
+
 ## Usage
 
 ```bash
-# Start TDD for a feature
+# Start TDD for a new feature
 /tdd "Add user email verification"
 
-# TDD for bug fix
+# TDD approach to bug fix
 /tdd "Fix: users can login with expired tokens"
 
 # TDD with specific test framework
-/tdd "Implement cart" --framework jest
+/tdd "Implement shopping cart" --framework jest
 
-# TDD in loop mode
-/loop "Implement feature" --type feature  # Uses TDD automatically
+# TDD in loop mode for full implementation
+/loop "Implement payment processing" --type tdd
+
+# Generate task breakdown only
+/tdd "Add search functionality" --plan-only
 ```
 
 ## Error Handling
 
 | Error | Cause | Resolution |
 |-------|-------|------------|
-| Test passes immediately | Test doesn't test new behavior | Rewrite test to fail first |
-| Cannot make test pass | Implementation too complex | Break into smaller tests |
-| Refactor breaks tests | Over-refactoring | Revert, smaller refactor steps |
-| No test framework | Project not configured | Set up test framework first |
-| Flaky test | Non-deterministic behavior | Fix test isolation |
+| Test passes on first run | Test is not testing new behavior | Delete test and rewrite to target unimplemented functionality |
+| Cannot find test runner | Test framework not configured | Run `npm install --save-dev jest` or configure appropriate test runner |
+| Tests depend on each other | Shared state between tests | Isolate tests with proper setup/teardown, avoid global state |
+| Implementation too complex | Skipped refactor phase | Stop, refactor current code, then continue with next test |
+| Flaky tests | Non-deterministic behavior (timing, external deps) | Mock external dependencies, use deterministic test data |
 
-**Fallback**: If TDD cycle breaks, return to last green state and retry with smaller steps.
-
-## Related Skills
-
-- `code-reviewer` - Reviews test coverage
-- `test-writer-fixer` - Focuses on test maintenance
-- `debugging` - Systematic issue resolution
+**Fallback**: If TDD skill fails to run tests, verify test framework installation, check `package.json` scripts, and run tests manually with `npm test` or equivalent command.
