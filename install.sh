@@ -124,54 +124,113 @@ echo ""
 # Offer to install skills
 echo -e "${BOLD}Next step: Install skills${RESET}"
 echo ""
+
+# Check if interactive installer will work (needs bash 4+)
+BASH_MAJOR_VERSION="${BASH_VERSINFO[0]:-3}"
+INTERACTIVE_AVAILABLE=true
+
+if [ "$BASH_MAJOR_VERSION" -lt 4 ]; then
+    INTERACTIVE_AVAILABLE=false
+fi
+
 echo "Would you like to install recommended skills now?"
-echo "  1) Yes, install now (interactive)"
-echo "  2) Install recommended bundle (auto)"
-echo "  3) Skip (install later with /install-skills)"
+
+if [ "$INTERACTIVE_AVAILABLE" = true ]; then
+    echo "  1) Yes, install now (interactive)"
+    echo "  2) Install recommended bundle (auto) ⭐ Recommended"
+    echo "  3) Skip (install later with /install-skills)"
+else
+    echo "  1) Install recommended bundle (auto) ⭐ Recommended"
+    echo "  2) Skip (install later with /install-skills)"
+    echo ""
+    echo -e "${YELLOW}ℹ${RESET} Interactive mode requires bash 4+. Install with: ${BOLD}brew install bash${RESET}"
+fi
+
 echo ""
-read -p "Select [1-3]: " choice
+read -p "Select: " choice
 
-case "$choice" in
-    1)
-        echo ""
-        echo -e "${BLUE}→${RESET} Launching interactive installer..."
-        bash "$INSTALL_DIR/scripts/install-skills.sh"
-        ;;
-    2)
-        echo ""
-        echo -e "${BLUE}→${RESET} Installing recommended bundle..."
+if [ "$INTERACTIVE_AVAILABLE" = true ]; then
+    # Menu with interactive option
+    case "$choice" in
+        1)
+            echo ""
+            echo -e "${BLUE}→${RESET} Launching interactive installer..."
+            bash "$INSTALL_DIR/scripts/install-skills.sh"
+            ;;
+        2)
+            echo ""
+            echo -e "${BLUE}→${RESET} Installing recommended bundle..."
 
-        # Install to global by default
-        TARGET_DIR="$HOME/.claude/skills"
-        mkdir -p "$TARGET_DIR"
+            # Install to global by default
+            TARGET_DIR="$HOME/.claude/skills"
+            mkdir -p "$TARGET_DIR"
 
-        # Copy recommended skills
-        recommended=(
-            "debugging"
-            "tdd"
-            "deep-research"
-            "slop-scan"
-            "slop-fix"
-            "overseer"
-        )
+            # Copy recommended skills
+            recommended=(
+                "debugging"
+                "tdd"
+                "deep-research"
+                "slop-scan"
+                "slop-fix"
+                "overseer"
+            )
 
-        for skill in "${recommended[@]}"; do
-            if [ -d "$INSTALL_DIR/skills/$skill" ]; then
-                echo -e "${BLUE}→${RESET} Installing $skill..."
-                mkdir -p "$TARGET_DIR/$skill"
-                cp -r "$INSTALL_DIR/skills/$skill/"* "$TARGET_DIR/$skill/"
-                echo -e "${GREEN}✓${RESET} $skill"
-            fi
-        done
+            for skill in "${recommended[@]}"; do
+                if [ -d "$INSTALL_DIR/skills/$skill" ]; then
+                    echo -e "${BLUE}→${RESET} Installing $skill..."
+                    mkdir -p "$TARGET_DIR/$skill"
+                    cp -r "$INSTALL_DIR/skills/$skill/"* "$TARGET_DIR/$skill/"
+                    echo -e "${GREEN}✓${RESET} $skill"
+                fi
+            done
 
-        echo ""
-        echo -e "${GREEN}✓${RESET} Installed ${#recommended[@]} skills to $TARGET_DIR"
-        ;;
-    3)
-        echo ""
-        echo -e "${YELLOW}⚠${RESET} Skipped skill installation"
-        ;;
-esac
+            echo ""
+            echo -e "${GREEN}✓${RESET} Installed ${#recommended[@]} skills to $TARGET_DIR"
+            ;;
+        3)
+            echo ""
+            echo -e "${YELLOW}⚠${RESET} Skipped skill installation"
+            ;;
+    esac
+else
+    # Menu without interactive option (bash 3.2)
+    case "$choice" in
+        1)
+            echo ""
+            echo -e "${BLUE}→${RESET} Installing recommended bundle..."
+
+            # Install to global by default
+            TARGET_DIR="$HOME/.claude/skills"
+            mkdir -p "$TARGET_DIR"
+
+            # Copy recommended skills
+            recommended=(
+                "debugging"
+                "tdd"
+                "deep-research"
+                "slop-scan"
+                "slop-fix"
+                "overseer"
+            )
+
+            for skill in "${recommended[@]}"; do
+                if [ -d "$INSTALL_DIR/skills/$skill" ]; then
+                    echo -e "${BLUE}→${RESET} Installing $skill..."
+                    mkdir -p "$TARGET_DIR/$skill"
+                    cp -r "$INSTALL_DIR/skills/$skill/"* "$TARGET_DIR/$skill/"
+                    echo -e "${GREEN}✓${RESET} $skill"
+                fi
+            done
+
+            echo ""
+            echo -e "${GREEN}✓${RESET} Installed ${#recommended[@]} skills to $TARGET_DIR"
+            ;;
+        2)
+            echo ""
+            echo -e "${YELLOW}⚠${RESET} Skipped skill installation"
+            ;;
+    esac
+fi
 
 echo ""
 echo -e "${BOLD}Quick Start:${RESET}"
