@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-1.7.0-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.8.0-ec4899?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -80,6 +80,7 @@ source ~/.zshrc
 
 | Feature | What it does | Command |
 |---------|--------------|---------|
+| **Neural Squad** | Multi-agent orchestration with anti-slop enforcement | `/squad-init`, `/squad-status` |
 | **CRAFT Framework** | Structured prompts for autonomous agents | `/craft` |
 | **KPI Tracking** | Measure Plan/Review Velocity, Autonomy, Loop State | `/kpi` |
 | **Compute Advantage** | Calculate your agentic leverage ratio | `/ca` |
@@ -117,6 +118,12 @@ source ~/.zshrc
 # Autonomous work
 /loop "Fix all tests" --max 10
 /loop "Build feature" --craft   # With CRAFT prompt
+
+# Multi-agent squad
+/squad-init                      # Initialize 3-agent system
+/squad-status                    # Check agents and tasks
+/squad-task create "Feature"     # Create task for squad
+/squad-standup                   # Daily standup report
 
 # Agentic metrics
 /kpi                             # Performance dashboard
