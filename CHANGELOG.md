@@ -7,6 +7,90 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.7.0] - 2026-02-03
+
+### Agentic Engineering Framework Release
+
+Major update introducing comprehensive agentic coding measurement and optimization tools.
+
+### Added
+
+#### CRAFT Framework (`/craft`)
+Structured prompt engineering framework for autonomous agent tasks:
+- **C**ontext - Current situation and constraints
+- **R**equirements - Success criteria and objectives
+- **A**ctions - Allowed/forbidden operations with 3-tier boundaries
+- **F**low - Execution steps and iteration strategy
+- **T**ests - Verification and completion signals
+
+Includes:
+- 6 Core Areas checklist (Commands, Testing, Structure, Style, Git, Boundaries)
+- 3-Tier Boundary System (✅ Always / ⚠️ Ask first / 🚫 Never)
+- Integration with `/loop --craft` for autonomous sessions
+
+#### KPI Tracking Skill (`/kpi`)
+Track the 4 core metrics of agentic coding performance:
+- **Plan Velocity** - Time from intent to actionable spec
+- **Review Velocity** - Time per code review cycle
+- **Autonomy Duration** - Time agents work without intervention
+- **Loop State** - Distribution across In-Loop/Out-Loop/ZTE
+
+```bash
+/kpi                     # Dashboard
+/kpi autonomy 45 "Task"  # Log session
+/kpi report              # Weekly report
+```
+
+#### Compute Advantage Calculator (`/ca`)
+Calculate your agentic leverage with the Compute Advantage formula:
+
+```
+CA = (Compute Scaling × Autonomy Duration) / (Time + Effort + Monetary Cost)
+```
+
+Interpretation:
+- < 2.0 = Break-even
+- 2.0-5.0 = Good leverage
+- 5.0-10.0 = Excellent
+- > 10.0 = Elite (ZTE-level)
+
+#### Cost Tracker Skill (`/cost`)
+Real-time API cost tracking for Compute Advantage calculations:
+- Daily/weekly/monthly cost dashboards
+- Budget alerts (80% threshold warnings)
+- Model-specific pricing (Opus, Sonnet, Haiku, Codex, Gemini)
+- Cost-per-autonomy-hour metrics
+
+```bash
+/cost                    # Today's costs
+/cost budget 50 --weekly # Set budget
+/cost report             # Weekly breakdown
+```
+
+#### CRAFT Template (`templates/craft.yaml`)
+Complete YAML template for structured autonomous prompts:
+- Full CRAFT sections with examples
+- 6 Core Areas reference
+- 3-Tier Boundary templates
+- Spec-Driven Development phases
+- Context management tips
+
+### Changed
+
+#### Loop Command Updated
+- Added `--craft` flag for CRAFT-structured prompts
+- Integration with KPI tracking on loop completion
+- Auto-logging of autonomy duration
+
+### Documentation
+
+#### New Resources
+- `agentic-engineering-course.md` - Complete methodology
+- `agentic-frameworks.md` - CRAFT, KPIs, ZTE, Act-Learn-Reuse
+- `spec-driven-development.md` - 70% Problem, 6 Core Areas
+
+---
+
 ## [1.6.0] - 2026-02-03
 
 ### Claude Code 2.1.30 Integration Release

@@ -3,7 +3,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Claude%20Code-Plugin-6366f1?style=for-the-badge&logo=anthropic" alt="Claude Code Plugin">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License">
-  <img src="https://img.shields.io/badge/Version-1.5.0-ec4899?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-1.7.0-ec4899?style=for-the-badge" alt="Version">
 </p>
 
 <p align="center">
@@ -80,14 +80,16 @@ source ~/.zshrc
 
 | Feature | What it does | Command |
 |---------|--------------|---------|
+| **CRAFT Framework** | Structured prompts for autonomous agents | `/craft` |
+| **KPI Tracking** | Measure Plan/Review Velocity, Autonomy, Loop State | `/kpi` |
+| **Compute Advantage** | Calculate your agentic leverage ratio | `/ca` |
+| **Cost Tracking** | Real-time API cost monitoring | `/cost` |
 | **Skills Manager** | Install, enable/disable skills on demand | `/install-skills`, `/manage-skills` |
 | **Self-Learning** | Expertise files that grow smarter each session | `/remember`, `/recall` |
 | **Persistent Memory** | Facts and patterns that survive restarts | `/remember`, `/forget` |
 | **Code Quality** | Detect and auto-fix technical debt | `/slop-scan`, `/slop-fix`, `/overseer` |
 | **Neural Loops** | Autonomous coding sessions that iterate until done | `/loop` |
 | **Multi-AI** | Route tasks to Claude, Codex, or Gemini | `/pv-mesh`, `/ai-collab` |
-| **TTS Control** | Voice and text summaries, toggle anytime | `/tts on`, `/tts off` |
-| **Onboarding** | Interactive guided setup for new users | `/onboard` |
 
 ---
 
@@ -114,6 +116,13 @@ source ~/.zshrc
 
 # Autonomous work
 /loop "Fix all tests" --max 10
+/loop "Build feature" --craft   # With CRAFT prompt
+
+# Agentic metrics
+/kpi                             # Performance dashboard
+/ca                              # Compute Advantage score
+/cost                            # API cost tracking
+/craft "Build auth system"       # Generate structured prompt
 
 # Learning
 /learn https://github.com/user/repo
