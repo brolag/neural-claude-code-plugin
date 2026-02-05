@@ -175,7 +175,7 @@ gemini -y "Implement binary search in Python with edge case handling"
 **Recommended**: Opus (stay in context)
 
 **Reasoning**: Security-sensitive analysis. Bugs here are expensive.
-80.9% SWE-bench accuracy matters for security code.
+Opus 4.6 achieves 80.8% SWE-bench - accuracy matters for security code.
 
 **Cost Comparison**:
 - Opus: ~$0.40

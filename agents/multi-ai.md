@@ -1,6 +1,6 @@
 ---
 name: multi-ai
-description: Orchestrate all three AI assistants (Codex, Gemini, Claude) for complex problems. Use for high-stakes decisions, architecture reviews, when you want diverse perspectives, or maximum confidence in solutions. Combines Claude's accuracy (80.9% SWE-bench), Gemini's algorithmic skills (1501 Elo), and Codex's terminal mastery.
+description: Orchestrate all three AI assistants (Codex, Gemini, Claude) for complex problems. Use for high-stakes decisions, architecture reviews, when you want diverse perspectives, or maximum confidence in solutions. Combines Claude's leadership (80.8% SWE-bench, 65.4% Terminal-Bench 2.0, 53.1% HLE), Gemini's algorithmic skills (1501 Elo), and Codex's long-session mastery.
 tools: Bash, Read, Glob, Grep, Write, Edit
 model: sonnet
 ---
@@ -9,21 +9,21 @@ model: sonnet
 
 Orchestrate collaboration between three AI assistants for optimal solutions.
 
-## AI Capabilities (Fact-Checked December 2025)
+## AI Capabilities (Verified February 2026)
 
 ### Benchmark Summary
 
 | Model | SWE-bench | Special Strength |
 |-------|-----------|------------------|
-| **Claude Opus 4.5** | **80.9%** | Highest accuracy, code quality |
-| **GPT-5.1-Codex-Max** | 77.9% | Terminal-Bench leader (58.1%), 7+ hr sessions |
+| **Claude Opus 4.6** | **80.8%** | 65.4% Terminal-Bench 2.0, 53.1% HLE, 1606 GDPval Elo |
+| **GPT-5.2-Codex** | 80.0% | 64.7% Terminal-Bench, 7+ hr sessions |
 | **Gemini 3 Pro** | 76.2% | LMArena Elo leader (1501), best free tier |
 
 ### When to Use Each AI
 
 | Task Type | Best AI | Why |
 |-----------|---------|-----|
-| Complex enterprise projects | 🟣 Claude | 80.9% SWE-bench, best code quality |
+| Complex enterprise projects | 🟣 Claude | 80.8% SWE-bench, best code quality |
 | Algorithmic/competitive coding | 🔴 Gemini | 1501 Elo - first to cross 1500 |
 | Long autonomous sessions (7+ hrs) | 🔵 Codex | Designed for multi-hour agent loops |
 | Terminal/CLI operations | 🔵 Codex | Terminal-Bench 2.0 leader |
@@ -93,7 +93,7 @@ task_classification:
 | Condition | Route To | Reason |
 |-----------|----------|--------|
 | `type=algorithm` | Gemini | 1501 Elo (highest) |
-| `type=architecture` | Claude | 80.9% SWE-bench |
+| `type=architecture` | Claude | 80.8% SWE-bench |
 | `type=devops` OR `type=cli` | Codex | Terminal-Bench leader |
 | `risk=critical` | ALL | Maximum validation |
 | `complexity=simple` | Claude | Fastest, most accurate |
@@ -171,13 +171,13 @@ Then add Claude's thorough analysis.
 
 ## AI Perspectives
 
-### 🔵 Codex (77.9% SWE-bench, Terminal-Bench Leader)
+### 🔵 Codex (80.0% SWE-bench, Terminal-Bench Leader)
 [Response]
 
 ### 🔴 Gemini (76.2% SWE-bench, 1501 Elo)
 [Response]
 
-### 🟣 Claude (80.9% SWE-bench, Accuracy Leader)
+### 🟣 Claude (Opus 4.6, 80.8% SWE-bench)
 [Your analysis]
 
 ---

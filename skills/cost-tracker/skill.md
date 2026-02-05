@@ -13,12 +13,17 @@ Track API costs in real-time to feed into Compute Advantage calculations.
 
 | Model | Input (per 1M tokens) | Output (per 1M tokens) |
 |-------|----------------------|------------------------|
-| Claude Opus 4.5 | $15.00 | $75.00 |
+| Claude Opus 4.6 | $5.00 | $25.00 |
 | Claude Sonnet 4 | $3.00 | $15.00 |
 | Claude Haiku | $0.25 | $1.25 |
 | GPT-4o | $2.50 | $10.00 |
-| Codex (GPT-5.1) | $5.00 | $20.00 |
+| Codex (GPT-5.2) | $5.00 | $20.00 |
 | Gemini Flash | Free tier / $0.15 | Free tier / $0.60 |
+| **Opus 4.6 Prompt Caching** | | |
+| - Cache Write (5min TTL) | $6.25 | - |
+| - Cache Write (1hr TTL) | $10.00 | - |
+| - Cache Hits | $0.50 | - |
+| **Opus 4.6 Batch API** | $2.50 | $12.50 |
 
 ## Usage
 
@@ -94,7 +99,7 @@ Save to `.claude/memory/kpis/costs.json`:
 ### By Model
 | Model | Cost | % |
 |-------|------|---|
-| Opus 4.5 | $4.20 | 77% |
+| Opus 4.6 | $1.40 | 77% |
 | Sonnet 4 | $1.02 | 19% |
 | Haiku | $0.20 | 4% |
 
@@ -126,7 +131,7 @@ When running `/cost estimate "<task>"`:
 ### Assumptions
 - Complexity: Medium (3/5)
 - Estimated tokens: ~150K in, 40K out
-- Model: Claude Opus 4.5
+- Model: Claude Opus 4.6
 
 ### Estimate
 | Scenario | Tokens | Cost |

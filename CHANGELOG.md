@@ -7,6 +7,61 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.10.0] - 2026-02-05
+
+### Claude Opus 4.6 Migration
+
+Updated all model references from Claude Opus 4.5 to Claude Opus 4.6 across the entire plugin.
+
+### Changed
+
+#### Model References Updated
+All Opus 4.5 references migrated to Opus 4.6 with updated benchmarks:
+- **SWE-bench Verified**: 80.8% (slight decrease from 80.9%, but gains elsewhere)
+- **Terminal-Bench 2.0**: 65.4% (up from 59.8%)
+- **Humanity's Last Exam (HLE)**: 53.1% with tools, 40.0% without tools
+- **GDPval-AA**: 1606 Elo (+144 vs GPT-5.2, +190 vs Opus 4.5)
+- **BrowseComp**: 84.0%
+- **BigLaw Bench**: 90.2%, 40% perfect scores
+- **Cybersecurity**: Best on 38 of 40 investigations
+- **Computational biology**: ~2x better than Opus 4.5
+
+#### Pricing Updated
+- Standard: $5/$25 per 1M tokens (input/output) - corrected from incorrect $15/$75 listing (was Opus 4.0/4.1 pricing)
+- Premium (>200k tokens): $10/$37.50 per 1M tokens
+- Prompt caching: Write $6.25 (5min TTL), $10.00 (1hr TTL), Hits $0.50
+- Batch API: $2.50/$12.50 (50% discount)
+
+#### New Opus 4.6 Features Noted
+- 1M token context window (beta)
+- Adaptive thinking (auto-decides when to think deeper)
+- Context compaction (beta, auto-summarizes old context)
+- Effort parameter: low, medium, high (default), max
+- 128K output tokens
+- Agent teams in Claude Code
+- Model ID: `claude-opus-4-6`
+
+#### Competitor Benchmarks Updated
+- GPT-5.1-Codex-Max renamed to GPT-5.2-Codex (80.0% SWE-bench, 64.7% Terminal-Bench 2.0, 50.0% HLE)
+- Gemini 3 Pro Terminal-Bench corrected to 56.2%
+
+#### Files Updated
+- `agents/multi-ai.md` - Benchmark table, routing rules, response template
+- `agents/dispatcher.md` - AI capabilities, routing matrix, Plan-Execute diagram
+- `agents/codex.md` - GPT-5.1 to GPT-5.2 migration, all benchmarks updated
+- `agents/gemini.md` - Claude comparison reference, Terminal-Bench corrected
+- `skills/plan-execute/skill.md` - Planner/Reviewer diagram labels
+- `skills/cost-tracker/skill.md` - Pricing table, dashboard examples
+- `skills/slop-fix/skill.md` - Co-Author reference
+- `docs/ROUTING_PLAYBOOK.md` - Model strengths table
+- `docs/how-to/multi-ai.md` - Plan-Execute description, AI table
+- `docs/explanation/multi-ai.md` - Benchmark table, Plan-Execute diagram
+- `docs/index.html` - AI comparison table, model badges
+- `commands/route.md` - Security routing example
+- `README.md` - Version badge to 1.10.0
+
+---
+
 ## [1.9.0] - 2026-02-03
 
 ### Interactive Agentic Coding Course

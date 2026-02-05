@@ -10,7 +10,7 @@ Different AIs excel at different tasks:
 
 | AI | Benchmark | Strength |
 |----|-----------|----------|
-| **Claude** | 80.9% SWE-bench | Accuracy, edge cases, architecture |
+| **Claude** | 80.8% SWE-bench (Opus 4.6) | Accuracy, edge cases, architecture |
 | **Codex** | #1 Terminal-Bench | DevOps, long sessions, practical |
 | **Gemini** | 1501 Elo (algorithms) | Performance, math, free tier |
 
@@ -95,7 +95,7 @@ For multi-step tasks, combine strengths optimally:
 
 ```
 ┌────────────────┐     ┌────────────────┐     ┌────────────────┐
-│  OPUS 4.5      │     │  GEMINI FLASH  │     │  OPUS 4.5      │
+│  OPUS 4.6      │     │  GEMINI FLASH  │     │  OPUS 4.6      │
 │  (Planning)    │ ──▶ │  (Execution)   │ ──▶ │  (Review)      │
 │  5-10% tokens  │     │  70-80% tokens │     │  10-20% tokens │
 └────────────────┘     └────────────────┘     └────────────────┘

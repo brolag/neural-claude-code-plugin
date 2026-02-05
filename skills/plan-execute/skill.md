@@ -29,7 +29,7 @@ Orchestrates complex tasks using Opus for planning and Gemini for execution.
 └───────────────────────┬─────────────────────────────┘
                         ▼
 ┌─────────────────────────────────────────────────────┐
-│              OPUS 4.5 (Planner)                      │
+│              OPUS 4.6 (Planner)                      │
 │  - Analyzes task complexity                          │
 │  - Creates detailed execution plan                   │
 │  - Identifies dependencies                           │
@@ -45,7 +45,7 @@ Orchestrates complex tasks using Opus for planning and Gemini for execution.
 └───────────────────────┬─────────────────────────────┘
                         ▼
 ┌─────────────────────────────────────────────────────┐
-│              OPUS 4.5 (Reviewer)                     │
+│              OPUS 4.6 (Reviewer)                     │
 │  - Validates execution results                       │
 │  - Suggests corrections if needed                    │
 │  - Synthesizes final output                          │

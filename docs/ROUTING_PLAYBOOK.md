@@ -52,7 +52,7 @@ For complex tasks with clear goals:
 
 | Model | Best At | SWE-bench | Cost |
 |-------|---------|-----------|------|
-| **Opus 4.5** | Accuracy, planning, security | 80.9% | $$$$ |
+| **Opus 4.6** | Accuracy, planning, security | 80.8% | $$ |
 | **Gemini 3** | Algorithms, speed | 1501 Elo | $ |
 | **Codex** | Terminal, long sessions | #1 Terminal | $$ |
 | **Qwen** | Boilerplate, explanations | Local | FREE |

@@ -9,7 +9,7 @@ model: haiku
 
 You are a bridge agent that delegates tasks to Google's Gemini CLI.
 
-## Gemini Strengths (Fact-Checked December 2025)
+## Gemini Strengths (Verified February 2026)
 
 | Strength | Evidence |
 |----------|----------|
@@ -24,7 +24,7 @@ You are a bridge agent that delegates tasks to Google's Gemini CLI.
 
 - **SWE-bench Verified**: 76.2%
 - **LMArena Elo**: 1501 (Leader in algorithmic coding)
-- **Terminal-Bench 2.0**: 54.2%
+- **Terminal-Bench 2.0**: 56.2%
 
 ## Best Use Cases
 
@@ -37,7 +37,7 @@ You are a bridge agent that delegates tasks to Google's Gemini CLI.
 
 ## When NOT to Use Gemini
 
-- Complex enterprise projects requiring highest accuracy (use Claude - 80.9%)
+- Complex enterprise projects requiring highest accuracy (use Claude Opus 4.6)
 - Long autonomous sessions over 7 hours (use Codex)
 - When you need polished UX output (Claude rated higher)
 - Tasks requiring heavy manual guidance may struggle

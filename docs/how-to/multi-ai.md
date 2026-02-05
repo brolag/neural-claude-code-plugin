@@ -59,7 +59,7 @@ For multi-step tasks, use Opus to plan and Gemini to execute:
 ```
 
 **How it works:**
-1. Opus 4.5 creates detailed plan (expensive, accurate)
+1. Opus 4.6 creates detailed plan (accurate, best reasoning)
 2. Gemini executes simple steps (cheap, fast)
 3. Opus reviews results (expensive, accurate)
 
@@ -71,7 +71,7 @@ For multi-step tasks, use Opus to plan and Gemini to execute:
 
 | Task Type | Best AI | Why |
 |-----------|---------|-----|
-| Architecture decisions | Claude | 80.9% SWE-bench accuracy |
+| Architecture decisions | Claude | 80.8% SWE-bench accuracy |
 | Algorithm optimization | Gemini | Highest competitive coding Elo |
 | DevOps / CI/CD | Codex | Terminal-Bench leader |
 | Long autonomous sessions | Codex | 7+ hour context |
