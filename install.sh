@@ -93,7 +93,7 @@ if ! grep -q "CLAUDE_PLUGIN_ROOT" "$SHELL_RC" 2>/dev/null; then
     echo -e "${BLUE}→${RESET} Adding to shell configuration..."
     cat >> "$SHELL_RC" << EOF
 
-# Neural Claude Code Plugin
+# Neural Claude Code
 export CLAUDE_PLUGIN_ROOT="$INSTALL_DIR"
 EOF
     echo -e "${GREEN}✓${RESET} Added to $SHELL_RC"
